@@ -1,0 +1,11 @@
+
+
+##MODELAGEM
+Projeto Avaliativo 3 de Porgramação e Soluções Computacionais
+Pessoa <---- Professor() 
+Pessoa <---- Aluno()
+new Curso(professor, sala);
+new Sala(nome, local, capacidade);
+
+RF- persistir os dados em arquivos e/ou em banco de dados
+
