@@ -1,5 +1,5 @@
 package main_package;
 
-public class Professor {
+public class Professor extends Person{
 
 }

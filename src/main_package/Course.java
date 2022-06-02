@@ -1,5 +1,5 @@
 package main_package;
 
-public class Aluno {
+public class Course {
 
 }

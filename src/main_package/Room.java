@@ -1,5 +1,5 @@
 package main_package;
 
-public class Sala {
+public class Room {
 
 }
