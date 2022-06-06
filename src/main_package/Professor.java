@@ -1,13 +1,20 @@
 package main_package;
 
-public class Professor extends Person{
-	public String employeeCode;
+public class Professor extends Pessoa{
+	private String codFuncionario;
 
-	public Professor(String fullName, String cpf, String address, String email, String phoneNumber,
-			String employeeCode) {
+	public Professor(String fullName, String cpf, String address, String email, String phoneNumber) {
 		super(fullName, cpf, address, email, phoneNumber);
-		this.employeeCode = employeeCode;
+		setCodFuncionario();
 	}
 	
+	public String getCodFuncionario() {
+		return codFuncionario;
+	}
+	
+	private void setCodFuncionario() {
+		this.codFuncionario = "" + (Main.professores.size() + 1);
+	}
 	
 }
+
