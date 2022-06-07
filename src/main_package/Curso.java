@@ -13,6 +13,7 @@ public class Curso {
 	public ArrayList<Aluno> alunosMat = new ArrayList<>();
 	
 	public Curso(Professor professor, Sala sala, String nomeCurso, int cargaHor, String descCurso) {
+		Main.cursos.add(this);
 		this.setProfessor(professor);
 		this.setSala(sala);
 		this.setCodigoCurso();
@@ -20,15 +21,29 @@ public class Curso {
 		this.cargaHor = cargaHor;
 		this.descCurso = descCurso;
 	}
+	private boolean alunoJaMatriculado(Aluno aluno) {
+		for (int i = 0; i < alunosMat.size(); i++) {
+			if(aluno.getMatricula() == alunosMat.get(i).getMatricula()) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
 	
 	public boolean matricularAluno(Aluno aluno) {
 		if(this.getSala().getCapacidadeMax()<=alunosMat.size()) {
 			System.out.println("Nao foi possivel adicionar o aluno, a sala nao comporta mais alunos.");
 			return false;
 		}else {
-			alunosMat.add(aluno);
-			System.out.println("Aluno matriculado!");
-			return true;
+			if(!alunoJaMatriculado(aluno)) {
+				alunosMat.add(aluno);
+				System.out.println("O aluno "+ aluno.getNomeCom()+" matriculado no curso "+ this.getNomeCurso()+"!");
+				return true;
+			}else {
+				System.out.println("O aluno "+ aluno.getNomeCom()+" ja esta matriculado no curso "+ this.getNomeCurso()+"!");
+				return true;
+			}
 		}
 	}
 
@@ -37,7 +52,7 @@ public class Curso {
 	}
 
 	private void setCodigoCurso() {
-		this.codigoCurso = "" + (Main.cursos.size() + 1);
+		this.codigoCurso = "" + (Main.cursos.size());
 	}
 
 	public int getCargaHor() {
@@ -75,4 +90,26 @@ public class Curso {
 	public void setProfessor(Professor professor) {
 		this.professor = professor;
 	}
+	
+	private String nomeAlunos() {
+		if(alunosMat.size()>0) {
+			String lista = "";
+			for (int i = 0; i < alunosMat.size(); i++) {
+				lista += "\t" + alunosMat.get(i).getNomeCom()+ ";\n";
+			}
+			return "Ha " + alunosMat.size() + " aluno(s) neste curso.\n" + lista;
+		}else return "Nao ha alunos matriculados neste curso.";
+	}
+
+	@Override
+	public String toString() {
+		return "Curso -" + getNomeCurso()+"-\n"
+				+ "Codigo: "+ getCodigoCurso() + ";\n"
+				+ "Carga Hor.: " + getCargaHor() + ";\n"
+				+ "Descrcao: "+ getDescCurso() + ";\n"
+				+ "Sala: " + getSala().getNomeSala() + ";\n"
+				+ "Professor: " + getProfessor().getNomeCom() + ";\n"
+				+ nomeAlunos() + "\n";
+	}
+	
 }

@@ -6,6 +6,7 @@ public class Aluno extends Pessoa{
 	public Aluno(String nomeCom, String cpf, String endereco, String email, String numCel) {
 		super(nomeCom, cpf, endereco, email, numCel);
 		this.setMatricula();
+		Main.alunos.add(this);
 	}
 
 	public String getMatricula() {
@@ -13,8 +14,23 @@ public class Aluno extends Pessoa{
 	}
 
 	private void setMatricula() {
-		this.matricula = ""+ (Main.alunos.size() + 1);
+		
+		this.matricula = ""+ (Main.alunos.size());
 	}
+
+	@Override
+	public String toString() {
+		return ""
+				+ "Aluno\n"
+				+ "Matricula: " + getMatricula() + ";\n"
+				+ "Nome: " + getNomeCom() + ";\n"
+				+ "CPF: " + getCpf()+";\n"
+				+ "Endereco: " + getEndereco() + ";\n"
+				+ "Email: " + getEmail() + ";\n"
+				+ "Celular: " + getNumCel()+";\n";
+	}
+
+	
 
 	
 }
