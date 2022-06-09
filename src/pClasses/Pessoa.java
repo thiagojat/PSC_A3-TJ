@@ -1,18 +1,26 @@
-package main_package;
+package pClasses;
 
 public abstract class Pessoa {
 	private String nomeCom;
-	private String cpf;
+	private long cpf;
 	private String endereco;
 	private String email;
-	private String numCel;
+	private long numCel;
 	
-	public Pessoa(String nomeCom, String cpf, String endereco, String email, String numCel) {
+	public long getNumCel() {
+		return numCel;
+	}
+
+	public Pessoa(String nomeCom, long cpf, String endereco, String email, long numCel) {
+		super();
 		this.nomeCom = nomeCom;
 		this.cpf = cpf;
 		this.endereco = endereco;
 		this.email = email;
 		this.numCel = numCel;
+	}
+
+	public Pessoa() {
 	}
 
 	public String getNomeCom() {
@@ -23,14 +31,15 @@ public abstract class Pessoa {
 		this.nomeCom = nomeCom;
 	}
 
-	public String getCpf() {
+	public long getCpf() {
 		return cpf;
 	}
-
-	public void setCpf(String cpf) {
+	public void setCpf(long cpf) {
 		this.cpf = cpf;
 	}
-
+	public void setNumCel(long numCel) {
+		this.numCel = numCel;
+	}
 	public String getEndereco() {
 		return endereco;
 	}
@@ -47,13 +56,5 @@ public abstract class Pessoa {
 		this.email = email;
 	}
 
-	public String getNumCel() {
-		return numCel;
-	}
-
-	public void setNumCel(String numCel) {
-		this.numCel = numCel;
-	}
-	
 	
 }

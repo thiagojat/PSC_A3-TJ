@@ -1,4 +1,5 @@
-package main_package;
+package pClasses;
+
 
 public class Sala {
 	private String nomeSala;
@@ -7,7 +8,7 @@ public class Sala {
 	
 
 	public Sala(String nomeSala, String lugarSala, int capacidadeMax) {
-		Main.salas.add(this);
+		//Main.salas.add(this);
 		this.nomeSala = nomeSala;
 		this.lugarSala = lugarSala;
 		this.capacidadeMax = capacidadeMax;

@@ -1,20 +1,20 @@
-package main_package;
+package pClasses;
+
 
 public class Professor extends Pessoa{
 	private String codFuncionario;
 
-	public Professor(String fullName, String cpf, String address, String email, String phoneNumber) {
-		super(fullName, cpf, address, email, phoneNumber);
-		setCodFuncionario();
-		Main.professores.add(this);
+	public Professor(String nomeCom, long cpf, String endereco, String email, long numCel, String codFuncionario) {
+		super(nomeCom, cpf, endereco, email, numCel);
+		this.codFuncionario = codFuncionario;
 	}
-	
+
 	public String getCodFuncionario() {
 		return codFuncionario;
 	}
 	
-	private void setCodFuncionario() {
-		this.codFuncionario = "" + (Main.professores.size());
+	public void setCodFuncionario() {
+		//this.codFuncionario = "" + (Main.professores.size());
 	}
 	
 	@Override

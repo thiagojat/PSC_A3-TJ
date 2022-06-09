@@ -1,21 +1,23 @@
-package main_package;
+package pClasses;
 
 public class Aluno extends Pessoa{
 	private String matricula;
-
-	public Aluno(String nomeCom, String cpf, String endereco, String email, String numCel) {
+	
+	public Aluno(String nomeCom, long cpf, String endereco, String email, long numCel, String matricula) {
 		super(nomeCom, cpf, endereco, email, numCel);
-		this.setMatricula();
-		Main.alunos.add(this);
+		this.matricula = matricula;
+	}
+
+	public Aluno() {
+		
 	}
 
 	public String getMatricula() {
 		return matricula;
 	}
-
-	private void setMatricula() {
-		
-		this.matricula = ""+ (Main.alunos.size());
+	
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
 	}
 
 	@Override
