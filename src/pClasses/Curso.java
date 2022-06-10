@@ -5,14 +5,15 @@ import java.util.ArrayList;
 
 public class Curso {
 	private String nomeCurso;
-	private String codigoCurso;
+	private int codigoCurso;
+	private boolean ativo;
 	private int cargaHor;
 	private String descCurso;
 	private Professor professor;
 	private Sala sala;
-	
+
 	public ArrayList<Aluno> alunosMat = new ArrayList<>();
-	
+
 	public Curso(Professor professor, Sala sala, String nomeCurso, int cargaHor, String descCurso) {
 		//Main.cursos.add(this);
 		this.setProfessor(professor);
@@ -23,6 +24,9 @@ public class Curso {
 		this.descCurso = descCurso;
 	}
 
+	public Curso() {
+	}
+
 	public String getNomeCurso() {
 		return nomeCurso;
 	}
@@ -31,11 +35,12 @@ public class Curso {
 		this.nomeCurso = nomeCurso;
 	}
 
-	public String getCodigoCurso() {
+	public int getCodigoCurso() {
 		return codigoCurso;
 	}
 
-	public void setCodigoCurso(String codigoCurso) {
+
+	public void setCodigoCurso(int codigoCurso) {
 		this.codigoCurso = codigoCurso;
 	}
 
@@ -71,10 +76,6 @@ public class Curso {
 		this.sala = sala;
 	}
 
-	public ArrayList<Aluno> getAlunosMat() {
-		return alunosMat;
-	}
-
 	public void setAlunosMat(ArrayList<Aluno> alunosMat) {
 		this.alunosMat = alunosMat;
 	}
@@ -82,4 +83,25 @@ public class Curso {
 	public ArrayList<Aluno> getAlunos() {
 		return alunosMat;
 	}
+	public boolean isAtivo() {
+		return ativo;
+	}
+	
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+	@Override
+	public String toString() {
+		return "Curso\n"
+				+ "Nome: " + getNomeCurso() + ";\n"
+				+ "Codigo: " + getCodigoCurso() + ";\n"
+				+ "Ativo: " + isAtivo() + ";\n"
+				+ "Professor: " + getProfessor() + ";\n"
+				+ "Sala: " + getSala() + ";\n"
+				+ "Carga Horaria: " + getCargaHor() + ";\n"
+				+ "Descrição: " + getDescCurso() + ";\n"
+				+ "Alunos" + getAlunos()+";\n";
+	}
+
+
 }
