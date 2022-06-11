@@ -6,9 +6,13 @@ import javax.swing.JOptionPane;
 
 import pClasses.*;
 import pDAO.CursoDAO;
+import pDAO.ProfessorDAO;
+import pDAO.SalaDAO;
 
 public class CursoController {
 	CursoDAO cd = new CursoDAO();
+	ProfessorDAO pd = new ProfessorDAO();
+	SalaDAO sd = new SalaDAO();
 
 	public void menu() {
 		String inputValue = JOptionPane.showInputDialog(""
@@ -39,17 +43,6 @@ public class CursoController {
 			menu();
 		}
 	}
-
-	public void cadastrarCurso() {
-		Curso c = new Curso();
-
-		c.setNomeCurso(JOptionPane.showInputDialog("Digite o nome do curso"));
-		c.setCargaHor(Integer.valueOf(JOptionPane.showInputDialog("Digite a carga horaria do curso")));
-		c.setDescCurso(JOptionPane.showInputDialog("Digite uma descrição para o curso"));
-		c.setAtivo(true);
-		
-		cd.inserir(c);
-	}
 	
 	public void listarMenu() {
 		String inputValue = JOptionPane.showInputDialog(""
@@ -63,34 +56,63 @@ public class CursoController {
 			listarCurso();
 			break;
 		case 2:
-			listarCurso(true);
+			listarCursosAtivos();
 			break;
 		case 3:
-			listarCurso(false);
+			listarCursosInativos();
 		default:
 			JOptionPane.showMessageDialog(null, "Insira uma opcao valida","Erro", JOptionPane.ERROR_MESSAGE);
 			listarMenu();
 		}
 	}
 
+	public void cadastrarCurso() {
+		Curso c = new Curso();
+
+		c.setNomeCurso(JOptionPane.showInputDialog("Digite o nome do curso"));
+		Professor[] profs = new Professor[pd.listar().size()];
+		int count = 0;
+		for(Professor p : pd.listar()) {
+			profs[count] = p;
+			count++;
+		}
+		Object prof = JOptionPane.showInputDialog(null,"Escolha um professor", "Professor", JOptionPane.INFORMATION_MESSAGE, null, profs,profs[0]);
+		c.setProfessor((Professor)prof);
+		c.setCargaHor(Integer.valueOf(JOptionPane.showInputDialog("Digite a carga horaria do curso")));
+		c.setDescCurso(JOptionPane.showInputDialog("Digite uma descrição para o curso"));
+		Sala[] salas = new Sala[sd.listar().size()];
+		count = 0;
+		for(Sala s : sd.listar()) {
+			salas[count] = s;
+			count++;
+		}
+		Object sala = JOptionPane.showInputDialog(null,"Escolha um professor", "Professor", JOptionPane.INFORMATION_MESSAGE, null, salas,salas[0]);
+		c.setSala((Sala)sala);
+		c.setAtivo(true);
+		
+		cd.inserir(c);
+	}
+
 	public void listarCurso(){
 		String sCursos = listagemCurso();
 		JOptionPane.showMessageDialog(null, sCursos, "Lista de cursos", JOptionPane.PLAIN_MESSAGE);
 	}
-	
-	public void listarCurso(Boolean bool){
-		String sCursos = listagemCurso(bool);
+	public void listarCursosAtivos(){
+		String sCursos = listagemCursosAtivos();
 		JOptionPane.showMessageDialog(null, sCursos, "Lista de cursos", JOptionPane.PLAIN_MESSAGE);
 	}
-	
+	public void listarCursosInativos(){
+		String sCursos = listagemCursosInativos();
+		JOptionPane.showMessageDialog(null, sCursos, "Lista de cursos", JOptionPane.PLAIN_MESSAGE);
+	}
 	
 	public void alterarCurso() {
 
         Curso c = new Curso();
         int id;
-        ArrayList<Curso> alunos = (ArrayList<Curso>)cd.listar();
+        ArrayList<Curso> cursos = (ArrayList<Curso>)cd.listar();
         String listagem = "";
-        for (Curso cc : alunos) {
+        for (Curso cc : cursos) {
             listagem += ""
 					+ "Curso\n"
 					+ "Codigo do curso: " + cc.getCodigoCurso()+";\n"
@@ -98,9 +120,26 @@ public class CursoController {
         }
         id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite o codigo do curso que deseja alterar: "));
 
-        c.setNomeCurso(JOptionPane.showInputDialog("Digite o nome: ", alunos.get(id-1).getNomeCurso()));
-        c.setCargaHor(Integer.valueOf(JOptionPane.showInputDialog("Digite a carga horaria: ", alunos.get(id-1).getCargaHor())));
-        c.setDescCurso(JOptionPane.showInputDialog("Digite a desclição do curso: ", alunos.get(id-1).getDescCurso()));
+        c.setNomeCurso(JOptionPane.showInputDialog("Digite o nome: ", cd.getCursoWithId(id).getNomeCurso()));
+        Professor[] profs = new Professor[pd.listar().size()];
+		int count = 0;
+		for(Professor p : pd.listar()) {
+			profs[count] = p;
+			count++;
+		}
+		Object prof = JOptionPane.showInputDialog(null,"Escolha um professor", "Professor", JOptionPane.INFORMATION_MESSAGE, null, profs,profs[0]);
+		c.setProfessor((Professor)prof);
+		c.setCargaHor(Integer.valueOf(JOptionPane.showInputDialog("Digite a carga horaria: ", cd.getCursoWithId(id).getCargaHor())));
+		c.setDescCurso(JOptionPane.showInputDialog("Digite a descrição do curso: ", cd.getCursoWithId(id).getDescCurso()));
+		Sala[] salas = new Sala[sd.listar().size()];
+		count = 0;
+		for(Sala s : sd.listar()) {
+			salas[count] = s;
+			count++;
+		}
+		Object sala = JOptionPane.showInputDialog(null,"Escolha um professor", "Professor", JOptionPane.INFORMATION_MESSAGE, null, salas,salas[0]);
+		c.setSala((Sala)sala);
+        
 
         cd.alteraCurso(c, id);
     }
@@ -109,24 +148,24 @@ public class CursoController {
 
         Curso c = new Curso();
         int id;
-        String listagem = listagemCurso(false);
+        String listagem = listagemCursosAtivos();
         id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite o codigo do curso que deseja ativar: "));
 
         c.setAtivo(true);
 
-        cd.setAtivo(c, id);
+        cd.setStatus(c, id);
     }
 	
 	public void desativarCurso() {
 
         Curso c = new Curso();
         int id;
-        String listagem = listagemCurso(false);
+        String listagem = listagemCursosInativos();
         id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite o codigo do curso que deseja desativar: "));
 
         c.setAtivo(false);
 
-        cd.setAtivo(c, id);
+        cd.setStatus(c, id);
     }
 	
 	private String listagemCurso() {
@@ -139,18 +178,29 @@ public class CursoController {
 		return sCursos;
 	}
 	
-	private String listagemCurso(Boolean bool) {
+	private String listagemCursosAtivos() {
 		String sCursos = "";
 		ArrayList<Curso> aCursos = new ArrayList<>();
-		aCursos = (ArrayList<Curso>) cd.listar();
+		aCursos = (ArrayList<Curso>) cd.listarAtivos();
 		for(Curso c : aCursos) {
-			if(c.isAtivo() == bool) {
 				sCursos += ""
 						+ "Curso\n"
 						+ "Ativo: " + c.isAtivo()+";\n"
 						+ "Codigo do curso: " + c.getCodigoCurso()+";\n"
 						+ "Nome do curso: "+c.getNomeCurso()+"\n";
-			}
+		}
+		return sCursos;
+	}
+	private String listagemCursosInativos() {
+		String sCursos = "";
+		ArrayList<Curso> aCursos = new ArrayList<>();
+		aCursos = (ArrayList<Curso>) cd.listarInativos();
+		for(Curso c : aCursos) {
+				sCursos += ""
+						+ "Curso\n"
+						+ "Ativo: " + c.isAtivo()+";\n"
+						+ "Codigo do curso: " + c.getCodigoCurso()+";\n"
+						+ "Nome do curso: "+c.getNomeCurso()+"\n";
 		}
 		return sCursos;
 	}

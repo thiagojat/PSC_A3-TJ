@@ -41,14 +41,21 @@ public class Sala {
 	public void setCodSala(int codSala) {
 		this.codSala = codSala;
 	}
-	@Override
-	public String toString() {
+
+	public String toStringAll() {
 		return "Sala\n"
 				+ "Codigo: " + getCodSala()+";\n"
 				+ "Nome da sala: " + getNomeSala() + ";\n"
 				+ "Lugar da Sala: " + getLugarSala() + ";\n"
 				+ "Capacidade: " + getCapacidadeMax() + ";\n";
 	}
+	@Override
+	public String toString() {
+		return "Sala:" + getNomeSala() + " Cap.: "+ getCapacidadeMax() + " alunos";
+	}
+	
+	
+	
 
 
 }

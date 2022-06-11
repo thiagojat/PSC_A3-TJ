@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.swing.JOptionPane;
 
+import pAdcionais.FuncoesAdicionais;
 import pClasses.Aluno;
 import pDAO.AlunoDAO;
 
@@ -13,6 +14,7 @@ public class AlunoController {
 
 	Scanner sc = new Scanner(System.in); 
 	AlunoDAO ad = new AlunoDAO();
+	FuncoesAdicionais fa = new FuncoesAdicionais();
 
 	public void menu() {
 		String inputValue = JOptionPane.showInputDialog(""
@@ -45,7 +47,14 @@ public class AlunoController {
 
 		Aluno a = new Aluno();
 		a.setNomeCom(JOptionPane.showInputDialog("Digite o nome do aluno"));
-		a.setCpf(Long.valueOf(JOptionPane.showInputDialog("Digite o CPF do aluno")));
+		String cpf = JOptionPane.showInputDialog("Digite o CPF do aluno");
+		if(fa.verificaCPF(cpf)) {
+			a.setCpf(cpf);
+		}else {
+			while(!fa.verificaCPF(cpf)) {
+				cpf = JOptionPane.showInputDialog("Digite o CPF do aluno");
+			}
+		}
 		a.setEndereco(JOptionPane.showInputDialog("Digite o endereço do aluno:"));
 		a.setEmail(JOptionPane.showInputDialog("Digite o email do aluno:"));
 		a.setNumCel(Long.valueOf(JOptionPane.showInputDialog("Digite o numero de celular do aluno")));
@@ -79,11 +88,11 @@ public class AlunoController {
 		}
 		id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite a matricula do aluno que deseja alterar: "));
 
-		a.setNomeCom(JOptionPane.showInputDialog("Digite o nome: ", alunos.get(id-1).getNomeCom()));
-		a.setCpf(Long.parseLong(JOptionPane.showInputDialog("Digite o CPF: ", alunos.get(id-1).getCpf())));
-		a.setEndereco(JOptionPane.showInputDialog("Digite o endereco: ", alunos.get(id-1).getEndereco()));
-		a.setEmail(JOptionPane.showInputDialog("Digite o email: ", alunos.get(id-1).getEmail()));
-		a.setNumCel(Long.parseLong(JOptionPane.showInputDialog("Digite o celular: ", alunos.get(id-1).getNumCel())));
+		a.setNomeCom(JOptionPane.showInputDialog("Digite o nome: ", ad.getAlunoWithIndex(id).getNomeCom()));
+		a.setCpf(JOptionPane.showInputDialog("Digite o CPF: ", ad.getAlunoWithIndex(id).getCpf()));
+		a.setEndereco(JOptionPane.showInputDialog("Digite o endereco: ", ad.getAlunoWithIndex(id).getEndereco()));
+		a.setEmail(JOptionPane.showInputDialog("Digite o email: ", ad.getAlunoWithIndex(id).getEmail()));
+		a.setNumCel(Long.parseLong(JOptionPane.showInputDialog("Digite o celular: ", ad.getAlunoWithIndex(id).getNumCel())));
 
 		ad.alteraAluno(a, id);
 	}

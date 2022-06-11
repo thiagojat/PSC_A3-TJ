@@ -3,7 +3,7 @@ package pClasses;
 public class Aluno extends Pessoa{
 	private String matricula;
 	
-	public Aluno(String nomeCom, long cpf, String endereco, String email, long numCel, String matricula) {
+	public Aluno(String nomeCom, String cpf, String endereco, String email, long numCel, String matricula) {
 		super(nomeCom, cpf, endereco, email, numCel);
 		this.matricula = matricula;
 	}

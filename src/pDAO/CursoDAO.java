@@ -12,15 +12,19 @@ import pClasses.Curso;
 
 public class CursoDAO {
 	Connection conn = Conector.getConnection();
-
+	ProfessorDAO pd = new ProfessorDAO();
+	SalaDAO sd = new SalaDAO();
+	
 	public boolean inserir(Curso curso) {
-		String sql ="INSERT INTO curso(nome,carga_horaria, desc_curso, ativo)VALUES(?,?,?,?)";
+		String sql ="INSERT INTO curso(nome,carga_horaria, desc_curso, status, cod_func_curso, cod_sala_curso)VALUES(?,?,?,?,?,?)";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1,curso.getNomeCurso());
 			stmt.setString(2,""+curso.getCargaHor());
 			stmt.setString(3,""+curso.getDescCurso());
-			stmt.setString(4,""+curso.isAtivo());
+			stmt.setBoolean(4, curso.isAtivo());
+			stmt.setString(5, curso.getProfessor().getCodFuncionario());
+			stmt.setString(6, ""+curso.getSala().getCodSala());
 
 			stmt.execute();
 			System.out.println("estoremo fml");
@@ -43,7 +47,9 @@ public class CursoDAO {
 				c.setNomeCurso(resultado.getString("nome"));
 				c.setCargaHor(resultado.getInt("carga_horaria"));
 				c.setDescCurso(resultado.getString("desc_curso"));
-				c.setAtivo(resultado.getBoolean("ativo"));
+				c.setAtivo(resultado.getBoolean("status"));
+				c.setProfessor(pd.getProfessorWithIndex(resultado.getInt("cod_func_curso")));
+				c.setSala(sd.getSalaWithIndex(resultado.getInt("cod_sala_curso")));
 				
 				cursos.add(c);
 			}
@@ -52,8 +58,76 @@ public class CursoDAO {
 		}
 		return cursos;
 	}
+	
+	public List<Curso>listarAtivos(){
+		String sql  = "SELECT * FROM curso WHERE status=true";
+		List<Curso> cursos = new ArrayList<>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet resultado = stmt.executeQuery();
+			while(resultado.next()){
+				Curso c =new Curso();
+				c.setCodigoCurso(resultado.getInt("cod_curso"));
+				c.setNomeCurso(resultado.getString("nome"));
+				c.setCargaHor(resultado.getInt("carga_horaria"));
+				c.setDescCurso(resultado.getString("desc_curso"));
+				c.setAtivo(resultado.getBoolean("status"));
+				c.setProfessor(pd.getProfessorWithIndex(resultado.getInt("cod_func_curso")));
+				
+				cursos.add(c);
+			}
+		}catch(SQLException ex){
+			System.out.println(ex);
+		}
+		return cursos;
+	}
+	
+	public List<Curso>listarInativos(){
+		String sql  = "SELECT * FROM curso WHERE status=false";
+		List<Curso> cursos = new ArrayList<>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet resultado = stmt.executeQuery();
+			while(resultado.next()){
+				Curso c =new Curso();
+				c.setCodigoCurso(resultado.getInt("cod_curso"));
+				c.setNomeCurso(resultado.getString("nome"));
+				c.setCargaHor(resultado.getInt("carga_horaria"));
+				c.setDescCurso(resultado.getString("desc_curso"));
+				c.setAtivo(resultado.getBoolean("status"));
+				c.setProfessor(pd.getProfessorWithIndex(resultado.getInt("cod_func_curso")));
+				
+				cursos.add(c);
+			}
+		}catch(SQLException ex){
+			System.out.println(ex);
+		}
+		return cursos;
+	}
+	
+	public Curso getCursoWithId(int cod_curso){
+		String sql  = "SELECT * FROM curso WHERE cod_curso=?";
+		Curso c = new Curso();
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, cod_curso);
+			ResultSet resultado = stmt.executeQuery();
+			while(resultado.next()){
+				c.setCodigoCurso(resultado.getInt("cod_curso"));
+				c.setNomeCurso(resultado.getString("nome"));
+				c.setCargaHor(resultado.getInt("carga_horaria"));
+				c.setDescCurso(resultado.getString("desc_curso"));
+				c.setAtivo(resultado.getBoolean("status"));
+				c.setProfessor(pd.getProfessorWithIndex(resultado.getInt("cod_func_curso")));
+			}
+		}catch(SQLException ex){
+			System.out.println(ex);
+		}
+		return c;
+	}
+	
 	public void alteraCurso(Curso curso, int id) {
-        String sql = "UPDATE curso SET nome=?, carga_horaria=?, desc_curso=?, ativo=? WHERE cod_curso=?";
+        String sql = "UPDATE curso SET nome=?, carga_horaria=?, desc_curso=?, status=? WHERE cod_curso=?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, curso.getNomeCurso());
@@ -66,8 +140,9 @@ public class CursoDAO {
             System.out.println(ex);
         }
     }
-	public void setAtivo(Curso curso, int id) {
-        String sql = "UPDATE curso SET ativo=? WHERE cod_curso=?";
+	
+	public void setStatus(Curso curso, int id) {
+        String sql = "UPDATE curso SET status=? WHERE cod_curso=?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setBoolean(1,curso.isAtivo());
@@ -79,7 +154,7 @@ public class CursoDAO {
     }
 	
 	public boolean remover(Integer id){
-		String sql="DELETE FROM aluno WHERE cod_curso=?";
+		String sql="DELETE FROM curso WHERE cod_curso=?";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,id);

@@ -19,7 +19,7 @@ public class AlunoDAO {
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1,aluno.getNomeCom());
-			stmt.setString(2,""+aluno.getCpf());
+			stmt.setString(2,aluno.getCpf());
 			stmt.setString(3,aluno.getEndereco());
 			stmt.setString(4,aluno.getEmail());
 			stmt.setString(5,""+aluno.getNumCel());
@@ -43,7 +43,7 @@ public class AlunoDAO {
 				Aluno a =new Aluno();
 				a.setMatricula(resultado.getString("matricula"));
 				a.setNomeCom(resultado.getString("nome"));
-				a.setCpf(resultado.getLong("cpf"));
+				a.setCpf(resultado.getString("cpf"));
 				a.setEndereco(resultado.getString("endereco"));
 				a.setEmail(resultado.getString("email"));
 				a.setNumCel(resultado.getLong("celular"));
@@ -54,7 +54,26 @@ public class AlunoDAO {
 		}
 		return alunos;
 	}
-
+	public Aluno getAlunoWithIndex(int matricula) {
+		String sql = "SELECT * FROM aluno WHERE matricula=?";
+		Aluno a = new Aluno();
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,matricula);
+			ResultSet resultado = stmt.executeQuery();
+			while(resultado.next()){
+				a.setMatricula(resultado.getString("matricula"));
+				a.setNomeCom(resultado.getString("nome"));
+				a.setCpf(resultado.getString("cpf"));
+				a.setEndereco(resultado.getString("endereco"));
+				a.setEmail(resultado.getString("email"));
+				a.setNumCel(resultado.getLong("celular"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return a;
+	}
 	public void alteraAluno(Aluno aluno, int id) {
 		String sql = "UPDATE aluno SET nome=?, cpf=?, endereco=?, email=?, celular=? WHERE matricula=?";
 		try {

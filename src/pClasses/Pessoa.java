@@ -2,7 +2,7 @@ package pClasses;
 
 public abstract class Pessoa {
 	private String nomeCom;
-	private long cpf;
+	private String cpf;
 	private String endereco;
 	private String email;
 	private long numCel;
@@ -11,7 +11,7 @@ public abstract class Pessoa {
 		return numCel;
 	}
 
-	public Pessoa(String nomeCom, long cpf, String endereco, String email, long numCel) {
+	public Pessoa(String nomeCom, String cpf, String endereco, String email, long numCel) {
 		super();
 		this.nomeCom = nomeCom;
 		this.cpf = cpf;
@@ -31,10 +31,10 @@ public abstract class Pessoa {
 		this.nomeCom = nomeCom;
 	}
 
-	public long getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
-	public void setCpf(long cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 	public void setNumCel(long numCel) {

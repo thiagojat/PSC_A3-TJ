@@ -43,7 +43,7 @@ public class ProfessorController{
 		
 		Professor p = new Professor();
 		p.setNomeCom(JOptionPane.showInputDialog("Digite o nome do professor"));
-		p.setCpf(Long.valueOf(JOptionPane.showInputDialog("Digite o CPF do professor")));
+		p.setCpf(JOptionPane.showInputDialog("Digite o CPF do professor"));
 		p.setEndereco(JOptionPane.showInputDialog("Digite o endereço do professor:"));
 		p.setEmail(JOptionPane.showInputDialog("Digite o email do professor:"));
 		p.setNumCel(Long.valueOf(JOptionPane.showInputDialog("Digite o numero de celular do professor")));
@@ -58,7 +58,7 @@ public class ProfessorController{
 		ArrayList<Professor> aProfessores = new ArrayList<>();
 		aProfessores = (ArrayList<Professor>) pd.listar();
 		for(Professor p : aProfessores) {
-			sProfessores += p.toString() + "\n";
+			sProfessores += p.toStringAll() + "\n";
 		}
 		JOptionPane.showMessageDialog(null, sProfessores, "Lista de professores", JOptionPane.PLAIN_MESSAGE);
 	}
@@ -77,11 +77,11 @@ public class ProfessorController{
         }
         id = Integer.valueOf(JOptionPane.showInputDialog(null, listagem + "Digite o codigo do funcionario que deseja alterar: "));
 
-        p.setNomeCom(JOptionPane.showInputDialog("Digite o nome: ", professores.get(id-1).getNomeCom()));
-        p.setCpf(Long.parseLong(JOptionPane.showInputDialog("Digite o CPF: ", professores.get(id-1).getCpf())));
-        p.setEndereco(JOptionPane.showInputDialog("Digite o endereco: ", professores.get(id-1).getEndereco()));
-        p.setEmail(JOptionPane.showInputDialog("Digite o email: ", professores.get(id-1).getEmail()));
-        p.setNumCel(Long.parseLong(JOptionPane.showInputDialog("Digite o celular: ", professores.get(id-1).getNumCel())));
+        p.setNomeCom(JOptionPane.showInputDialog("Digite o nome: ", pd.getProfessorWithIndex(id).getNomeCom()));
+		p.setCpf(JOptionPane.showInputDialog("Digite o CPF: ", pd.getProfessorWithIndex(id).getCpf()));
+		p.setEndereco(JOptionPane.showInputDialog("Digite o endereco: ", pd.getProfessorWithIndex(id).getEndereco()));
+		p.setEmail(JOptionPane.showInputDialog("Digite o email: ", pd.getProfessorWithIndex(id).getEmail()));
+		p.setNumCel(Long.parseLong(JOptionPane.showInputDialog("Digite o celular: ", pd.getProfessorWithIndex(id).getNumCel())));
 
         pd.alteraProfessor(p, id);
     }

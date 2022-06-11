@@ -2,25 +2,28 @@ package pClasses;
 
 
 public class Professor extends Pessoa{
-	private int codFuncionario;
+	private String codFuncionario;
 
-	public Professor(String nomeCom, long cpf, String endereco, String email, long numCel, int codFuncionario) {
+	public Professor(String nomeCom, String cpf, String endereco, String email, long numCel, String codFuncionario) {
 		super(nomeCom, cpf, endereco, email, numCel);
 		this.codFuncionario = codFuncionario;
 	}
 	public Professor() {
 	}
 
-	public int getCodFuncionario() {
+	public String getCodFuncionario() {
 		return codFuncionario;
 	}
 	
-	public void setCodFuncionario(int codFuncionario) {
+	public void setCodFuncionario(String codFuncionario) {
 		this.codFuncionario = codFuncionario;
 	}
 	
 	@Override
 	public String toString() {
+		return getNomeCom() + " (Cód.;" + getCodFuncionario() + ")";
+	}
+	public String toStringAll() {
 		return ""
 				+ "Professor\n"
 				+ "Codigo de funcionário: " + getCodFuncionario() + ";\n"

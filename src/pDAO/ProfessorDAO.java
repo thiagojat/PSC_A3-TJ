@@ -14,15 +14,15 @@ public class ProfessorDAO {
 	Connection conn = Conector.getConnection();
 	//nomeCom, cpf, endereco, email, numCel
 
-	public boolean inserir(Professor Professor) {
+	public boolean inserir(Professor professor) {
 		String sql ="INSERT INTO professor(nome,cpf,endereco,email,celular)VALUES(?,?,?,?,?)";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1,Professor.getNomeCom());
-			stmt.setString(2,""+Professor.getCpf());
-			stmt.setString(3,Professor.getEndereco());
-			stmt.setString(4,Professor.getEmail());
-			stmt.setString(5,""+Professor.getNumCel());
+			stmt.setString(1,professor.getNomeCom());
+			stmt.setString(2,professor.getCpf());
+			stmt.setString(3,professor.getEndereco());
+			stmt.setString(4,professor.getEmail());
+			stmt.setString(5,""+professor.getNumCel());
 
 			stmt.execute();
 			System.out.println("estoremo fml");
@@ -41,9 +41,9 @@ public class ProfessorDAO {
 			ResultSet resultado = stmt.executeQuery();
 			while(resultado.next()){
 				Professor p =new Professor();
-				p.setCodFuncionario(resultado.getInt("cod_func"));
+				p.setCodFuncionario(resultado.getString("cod_func"));
 				p.setNomeCom(resultado.getString("nome"));
-				p.setCpf(resultado.getLong("cpf"));
+				p.setCpf(resultado.getString("cpf"));
 				p.setEndereco(resultado.getString("endereco"));
 				p.setEmail(resultado.getString("email"));
 				p.setNumCel(resultado.getLong("celular"));
@@ -53,6 +53,27 @@ public class ProfessorDAO {
 			System.out.println(ex);
 		}
 		return professores;
+	}
+	
+	public Professor getProfessorWithIndex(int codFuncionario) {
+		String sql = "SELECT * FROM professor WHERE cod_func=?";
+		Professor p = new Professor();
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,codFuncionario);
+			ResultSet resultado = stmt.executeQuery();
+			while(resultado.next()){
+				p.setCodFuncionario(resultado.getString("cod_func"));
+				p.setNomeCom(resultado.getString("nome"));
+				p.setCpf(resultado.getString("cpf"));
+				p.setEndereco(resultado.getString("endereco"));
+				p.setEmail(resultado.getString("email"));
+				p.setNumCel(resultado.getLong("celular"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return p;
 	}
 	
 	public void alteraProfessor(Professor professor, int id) {

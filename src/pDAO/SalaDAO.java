@@ -16,7 +16,7 @@ public class SalaDAO {
 	// nomeSala, local, capacidade
 
 	public boolean inserir(Sala sala) {
-		String sql ="INSERT INTO sala(nome,local,capacidade)VALUES(?,?,?)";
+		String sql ="INSERT INTO sala(nome,lugar,capacidade)VALUES(?,?,?)";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1,sala.getNomeSala());
@@ -42,7 +42,7 @@ public class SalaDAO {
 				Sala s =new Sala();
 				s.setCodSala(resultado.getInt("cod_sala"));
 				s.setNomeSala(resultado.getString("nome"));
-				s.setLugarSala(resultado.getString("local"));
+				s.setLugarSala(resultado.getString("lugar"));
 				s.setCapacidadeMax(resultado.getInt("capacidade"));
 				salas.add(s);
 			}
@@ -52,8 +52,27 @@ public class SalaDAO {
 		return salas;
 	}
 	
+	public Sala getSalaWithIndex(int cod_sala) {
+		String sql = "SELECT * FROM sala WHERE cod_sala=?";
+		Sala s = new Sala();
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,cod_sala);
+			ResultSet resultado = stmt.executeQuery();
+			while(resultado.next()){
+				s.setCodSala(resultado.getInt("cod_sala"));
+				s.setNomeSala(resultado.getString("nome"));
+				s.setLugarSala(resultado.getString("lugar"));
+				s.setCapacidadeMax(resultado.getInt("capacidade"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return s;
+	}
+	
 	public void alteraSala(Sala sala, int id) {
-        String sql = "UPDATE sala SET nome=?, local=?, capacidade=? WHERE cod_sala=?";
+        String sql = "UPDATE sala SET nome=?, lugar=?, capacidade=? WHERE cod_sala=?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, sala.getNomeSala());

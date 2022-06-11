@@ -96,8 +96,8 @@ public class Curso {
 				+ "Nome: " + getNomeCurso() + ";\n"
 				+ "Codigo: " + getCodigoCurso() + ";\n"
 				+ "Ativo: " + isAtivo() + ";\n"
-				+ "Professor: " + getProfessor() + ";\n"
-				+ "Sala: " + getSala() + ";\n"
+				+ "Professor: " + getProfessor().getNomeCom() + ";\n"
+				+ "Sala: " + getSala().getNomeSala() + ";\n"
 				+ "Carga Horaria: " + getCargaHor() + ";\n"
 				+ "Descrição: " + getDescCurso() + ";\n"
 				+ "Alunos" + getAlunos()+";\n";
