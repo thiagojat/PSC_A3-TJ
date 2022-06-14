@@ -8,9 +8,7 @@ import pAdcionais.FuncoesAdicionais;
 import pClasses.Aluno;
 import pDAO.AlunoDAO;
 
-public class AlunoController {
-
-	ArrayList<Aluno> alunos = new ArrayList<>(); 
+public class AlunoController extends FuncoesAdicionais{
 
 	Scanner sc = new Scanner(System.in); 
 	AlunoDAO ad = new AlunoDAO();
@@ -48,10 +46,10 @@ public class AlunoController {
 		Aluno a = new Aluno();
 		a.setNomeCom(JOptionPane.showInputDialog("Digite o nome do aluno"));
 		String cpf = JOptionPane.showInputDialog("Digite o CPF do aluno");
-		if(fa.verificaCPF(cpf)) {
+		if(verificaCPF(cpf)) {
 			a.setCpf(cpf);
 		}else {
-			while(!fa.verificaCPF(cpf)) {
+			while(!verificaCPF(cpf)) {
 				cpf = JOptionPane.showInputDialog("Digite o CPF do aluno");
 			}
 		}
@@ -59,7 +57,11 @@ public class AlunoController {
 		a.setEmail(JOptionPane.showInputDialog("Digite o email do aluno:"));
 		a.setNumCel(Long.valueOf(JOptionPane.showInputDialog("Digite o numero de celular do aluno")));
 
-		ad.inserir(a);
+		if(ad.inserir(a)) {;
+			System.out.println("estoremo fml");
+		}else {
+			System.out.println("mamemo");
+		}
 
 
 	}
@@ -69,7 +71,7 @@ public class AlunoController {
 		ArrayList<Aluno> aAlunos = new ArrayList<>();
 		aAlunos = (ArrayList<Aluno>) ad.listar();
 		for(Aluno a : aAlunos) {
-			sAlunos += a.toString() + "\n";
+			sAlunos += a.toStringAll() + "\n";
 		}
 		JOptionPane.showMessageDialog(null, sAlunos, "Lista de alunos", JOptionPane.PLAIN_MESSAGE);
 	}

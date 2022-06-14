@@ -13,7 +13,6 @@ import pClasses.Sala;
 public class SalaDAO {
 
 	Connection conn = Conector.getConnection();
-	// nomeSala, local, capacidade
 
 	public boolean inserir(Sala sala) {
 		String sql ="INSERT INTO sala(nome,lugar,capacidade)VALUES(?,?,?)";

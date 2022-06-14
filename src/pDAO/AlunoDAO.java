@@ -25,7 +25,6 @@ public class AlunoDAO {
 			stmt.setString(5,""+aluno.getNumCel());
 
 			stmt.execute();
-			System.out.println("estoremo fml");
 			return true;
 		}catch(SQLException ex){
 			System.out.println(ex);

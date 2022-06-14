@@ -20,8 +20,8 @@ public class Aluno extends Pessoa{
 		this.matricula = matricula;
 	}
 
-	@Override
-	public String toString() {
+
+	public String toStringAll() {
 		return ""
 				+ "Aluno\n"
 				+ "Matricula: " + getMatricula() + ";\n"
@@ -30,6 +30,11 @@ public class Aluno extends Pessoa{
 				+ "Endereco: " + getEndereco() + ";\n"
 				+ "Email: " + getEmail() + ";\n"
 				+ "Celular: " + getNumCel()+";\n";
+				
+	}
+	@Override
+	public String toString() {
+		return "Nome: " + getNomeCom() + "(Matricula: " + getMatricula() + ")\n";
 	}
 
 	

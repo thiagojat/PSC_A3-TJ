@@ -12,7 +12,6 @@ public class Main {
 		CursoController cc = new CursoController();
 		SalaController sc = new SalaController();
 
-
 		//Scanner sc = new Scanner(System.in); 
 		int op = 0;
 		do {

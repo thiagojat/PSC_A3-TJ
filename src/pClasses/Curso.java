@@ -3,7 +3,10 @@ package pClasses;
 import java.util.ArrayList;
 
 
-public class Curso {
+import pControllers.Aluno_CursoController;
+
+
+public class Curso{
 	private String nomeCurso;
 	private int codigoCurso;
 	private boolean ativo;
@@ -13,6 +16,7 @@ public class Curso {
 	private Sala sala;
 
 	public ArrayList<Aluno> alunosMat = new ArrayList<>();
+	Aluno_CursoController acc = new Aluno_CursoController();
 
 	public Curso(Professor professor, Sala sala, String nomeCurso, int cargaHor, String descCurso) {
 		//Main.cursos.add(this);
@@ -83,6 +87,16 @@ public class Curso {
 	public ArrayList<Aluno> getAlunos() {
 		return alunosMat;
 	}
+	public String listaAlunos() {
+		if(getAlunos().isEmpty()) {
+			return "não tem aluno";
+		}
+		String listagem = "";
+		for(Aluno a : getAlunos()) {
+			listagem+= "\t" +a.getNomeCom()+",\n";
+		}
+		return listagem;
+	}
 	public boolean isAtivo() {
 		return ativo;
 	}
@@ -90,8 +104,8 @@ public class Curso {
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
-	@Override
-	public String toString() {
+	
+	public String toStringAll() {
 		return "Curso\n"
 				+ "Nome: " + getNomeCurso() + ";\n"
 				+ "Codigo: " + getCodigoCurso() + ";\n"
@@ -100,8 +114,13 @@ public class Curso {
 				+ "Sala: " + getSala().getNomeSala() + ";\n"
 				+ "Carga Horaria: " + getCargaHor() + ";\n"
 				+ "Descrição: " + getDescCurso() + ";\n"
-				+ "Alunos" + getAlunos()+";\n";
+				+ "Alunos" + acc.listarAlunosEmCurso(this)+"\n";
+	}
+	
+	@Override
+	public String toString() {
+		return "Curso: " + getNomeCurso() + "(Cód: " + getCodigoCurso() + ")";
 	}
 
-
+	
 }
