@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 12-Jun-2022 às 00:26
+-- Tempo de geração: 14-Jun-2022 às 05:29
 -- Versão do servidor: 10.4.24-MariaDB
 -- versão do PHP: 8.1.6
 
@@ -42,7 +42,30 @@ CREATE TABLE `aluno` (
 
 INSERT INTO `aluno` (`matricula`, `cpf`, `nome`, `endereco`, `email`, `celular`) VALUES
 (1, '05289383042', 'Thiago Jose Avellaneda Techera', 'Estrada Jorge Pereira Nunes 61', 'techerajathiago@gmail.com', 9999999999),
-(2, '00895185121', 'thiagooo', 'dtyfjdrytd', 'cghdfuytdu', 1896451);
+(2, '00895185121', 'thiagooo', 'dtyfjdrytd', 'cghdfuytdu', 1896451),
+(3, '0535435003', 'Gabriel da Silva Bueno', 'Rua General Flores Da Cunha', 'patatex2003@gmail.com', 51995950293),
+(4, '126854784', 'Maria Luiza ', 'Baiuca do moreira', 'maria@maria.com', 849875614897);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `alunocurso`
+--
+
+CREATE TABLE `alunocurso` (
+  `r_matricula` int(11) NOT NULL,
+  `r_cod_curso` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `alunocurso`
+--
+
+INSERT INTO `alunocurso` (`r_matricula`, `r_cod_curso`) VALUES
+(3, 5),
+(1, 5),
+(1, 3),
+(4, 4);
 
 -- --------------------------------------------------------
 
@@ -65,9 +88,9 @@ CREATE TABLE `curso` (
 --
 
 INSERT INTO `curso` (`cod_curso`, `cod_func_curso`, `cod_sala_curso`, `nome`, `carga_horaria`, `desc_curso`, `status`) VALUES
-(3, 2, 2, 'psc', 50, 'aasassasasasa', 0),
+(3, 2, 2, 'modelagem', 50, 'modelagem', 0),
 (4, 1, 2, 'psc', 50, 'aaaaaa', 1),
-(5, 2, 2, 'psc', 50, 'aasassasasasa', 1);
+(5, 2, 2, 'animacao', 50, 'joguin', 0);
 
 -- --------------------------------------------------------
 
@@ -125,6 +148,13 @@ ALTER TABLE `aluno`
   ADD PRIMARY KEY (`matricula`);
 
 --
+-- Índices para tabela `alunocurso`
+--
+ALTER TABLE `alunocurso`
+  ADD KEY `fk_r_matricula` (`r_matricula`),
+  ADD KEY `fk_r_cod_curso` (`r_cod_curso`);
+
+--
 -- Índices para tabela `curso`
 --
 ALTER TABLE `curso`
@@ -152,7 +182,7 @@ ALTER TABLE `sala`
 -- AUTO_INCREMENT de tabela `aluno`
 --
 ALTER TABLE `aluno`
-  MODIFY `matricula` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `matricula` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `curso`
@@ -175,6 +205,13 @@ ALTER TABLE `sala`
 --
 -- Restrições para despejos de tabelas
 --
+
+--
+-- Limitadores para a tabela `alunocurso`
+--
+ALTER TABLE `alunocurso`
+  ADD CONSTRAINT `fk_r_cod_curso` FOREIGN KEY (`r_cod_curso`) REFERENCES `curso` (`cod_curso`),
+  ADD CONSTRAINT `fk_r_matricula` FOREIGN KEY (`r_matricula`) REFERENCES `aluno` (`matricula`);
 
 --
 -- Limitadores para a tabela `curso`
