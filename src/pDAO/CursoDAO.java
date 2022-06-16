@@ -1,3 +1,9 @@
+/*
+ * Classe responsavel por comunicar o codigo com o sistema de banco de dados: inserindo, resgatando,
+ * listando, editando e removendo dados.
+ * 
+ */
+
 package pDAO;
 
 import java.sql.Connection;
@@ -15,6 +21,8 @@ public class CursoDAO {
 	ProfessorDAO pd = new ProfessorDAO();
 	SalaDAO sd = new SalaDAO();
 	
+	/*metodo do tipo boleano que insere os valores de uma instancia de tipo Curso no sistema de banco de dados, 
+	 *retornando true se esta insercao for sucedida e false se essa operacao for cancelada*/
 	public boolean inserir(Curso curso) {
 		String sql ="INSERT INTO curso(nome,carga_horaria, desc_curso, status, cod_func_curso, cod_sala_curso)VALUES(?,?,?,?,?,?)";
 		try {
@@ -35,6 +43,8 @@ public class CursoDAO {
 		}
 	}
 
+	
+	/*Metodo do tipo lista que retorna uma lista de todos os cursos registrados no sistema de banco de dados*/
 	public List<Curso>listar(){
 		String sql  = "SELECT * FROM curso";
 		List<Curso> cursos = new ArrayList<>();
@@ -59,6 +69,7 @@ public class CursoDAO {
 		return cursos;
 	}
 	
+	/*Metodo do tipo lista que retorna uma lista de todos os cursos ativos registrados no sistema de banco de dados*/
 	public List<Curso>listarAtivos(){
 		String sql  = "SELECT * FROM curso WHERE status=true";
 		List<Curso> cursos = new ArrayList<>();
@@ -82,6 +93,7 @@ public class CursoDAO {
 		return cursos;
 	}
 	
+	/*Metodo do tipo lista que retorna uma lista de todos os cursos inativos registrados no sistema de banco de dados*/
 	public List<Curso>listarInativos(){
 		String sql  = "SELECT * FROM curso WHERE status=false";
 		List<Curso> cursos = new ArrayList<>();
@@ -105,6 +117,7 @@ public class CursoDAO {
 		return cursos;
 	}
 	
+	/*Metodo do tipo Curso que retorna uma instancia do tipo Curso apartir de um cod_curso especifico*/
 	public Curso getCursoWithId(int cod_curso){
 		String sql  = "SELECT * FROM curso WHERE cod_curso=?";
 		Curso c = new Curso();
@@ -126,6 +139,8 @@ public class CursoDAO {
 		return c;
 	}
 	
+	/*Metodo do tipo void que altera os dados de um Curso que o cod_curso seja igual ao id, usando valores de uma instancia
+	 *do tipo curso para inserir novos valores.*/
 	public void alteraCurso(Curso curso, int id) {
         String sql = "UPDATE curso SET nome=?, carga_horaria=?, desc_curso=?, status=? WHERE cod_curso=?";
         try {
@@ -141,6 +156,7 @@ public class CursoDAO {
         }
     }
 	
+	/*Metodo do tipo void que altera o status de um curso apartir de seu cod_curso.*/
 	public void setStatus(Curso curso, int id) {
         String sql = "UPDATE curso SET status=? WHERE cod_curso=?";
         try {
@@ -152,19 +168,5 @@ public class CursoDAO {
             System.out.println(ex);
         }
     }
-	
-	public boolean remover(Integer id){
-		String sql="DELETE FROM curso WHERE cod_curso=?";
-		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1,id);
-			stmt.execute();
-			System.out.println("excluido");
-			return true;
-		}catch(SQLException ex){
-			System.out.println(ex);
-			return false;  
-		}  
-	}
 
 }

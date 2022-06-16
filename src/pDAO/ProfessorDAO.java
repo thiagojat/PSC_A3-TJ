@@ -1,3 +1,9 @@
+/*
+ * Classe responsavel por comunicar o codigo com o sistema de banco de dados: inserindo, resgatando,
+ * listando, editando e removendo dados.
+ * 
+ */
+
 package pDAO;
 
 import java.sql.Connection;
@@ -12,8 +18,9 @@ import pClasses.Professor;
 
 public class ProfessorDAO {
 	Connection conn = Conector.getConnection();
-	//nomeCom, cpf, endereco, email, numCel
 
+	/*Metodo booleano que insere os dados no banco de dados de um professor a partir de uma instancia do tipo Professor.
+	 *Se esta insercao for sucedida, retorna true, se não, retorna false.*/
 	public boolean inserir(Professor professor) {
 		String sql ="INSERT INTO professor(nome,cpf,endereco,email,celular)VALUES(?,?,?,?,?)";
 		try {
@@ -32,7 +39,8 @@ public class ProfessorDAO {
 			return false;
 		}
 	}
-
+	
+	/*Metodo do tipo List que retorna do banco de dados uma lista com todos os professores registrados no banco de dados.*/
 	public List<Professor>listar(){
 		String sql  = "SELECT * FROM professor";
 		List<Professor> professores = new ArrayList<>();
@@ -55,6 +63,7 @@ public class ProfessorDAO {
 		return professores;
 	}
 	
+	/*Metodo do tipo Professor que retorna uma instancia do tipo Professor a partir de um cod_func especifico.*/
 	public Professor getProfessorWithIndex(int codFuncionario) {
 		String sql = "SELECT * FROM professor WHERE cod_func=?";
 		Professor p = new Professor();
@@ -76,6 +85,8 @@ public class ProfessorDAO {
 		return p;
 	}
 	
+	/*Metodo od tipo void que altera os valores de um professor de codi_func especifico a partir dos valores de uma instancia
+	 *do tipo Professor.*/
 	public void alteraProfessor(Professor professor, int id) {
         String sql = "UPDATE professor SET nome=?, cpf=?, endereco=?, email=?, celular=? WHERE cod_func=?";
         try {
@@ -91,5 +102,18 @@ public class ProfessorDAO {
             System.out.println(ex);
         }
     }
-
+	
+	/*Metodo do tipo booleano que remove os registros de um professor especifico a partir de um cod_func especifico(id)*/
+	public boolean remover(Integer id){
+		String sql="DELETE FROM professor WHERE cod_func=?";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,id);
+			stmt.execute();
+			return true;
+		}catch(SQLException ex){
+			System.out.println(ex);
+			return false;  
+		}  
+	}
 }

@@ -1,6 +1,5 @@
 package pTeste;
 
-//import java.util.Scanner;
 import javax.swing.JOptionPane;
 import pControllers.*;
 
@@ -12,8 +11,8 @@ public class Main {
 		CursoController cc = new CursoController();
 		SalaController sc = new SalaController();
 
-		//Scanner sc = new Scanner(System.in); 
 		int op = 0;
+		//loop que imprime o menu principal
 		do {
 			String inputValue = JOptionPane.showInputDialog(""
 					+ "O que deseja fazer?\n"
@@ -22,6 +21,7 @@ public class Main {
 					+ "3 - Acessar cursos\n"
 					+ "4 - Acessar salas\n");
 			op = Integer.valueOf(inputValue);
+			//switch que controla e direciona aos sub-menus
 			switch(op) {
 			case 1:
 				ac.menu();

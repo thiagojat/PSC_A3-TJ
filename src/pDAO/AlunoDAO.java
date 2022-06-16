@@ -1,3 +1,9 @@
+
+/*
+ * Classe responsavel por comunicar o codigo com o sistema de banco de dados: inserindo, resgatando,
+ * listando, editando e removendo dados.
+ * 
+ * */
 package pDAO;
 
 import java.sql.Connection;
@@ -12,8 +18,10 @@ import pClasses.Aluno;
 
 public class AlunoDAO {
 	Connection conn = Conector.getConnection();
-	//nomeCom, cpf, endereco, email, numCel
-
+	
+	/*metodo do tipo booleano que insere os valores de uma instancia do tipo Aluno no banco de dado, retornando true se esta inserção
+	 *for sucedida e false se for fracassada
+	 */	
 	public boolean inserir(Aluno aluno) {
 		String sql ="INSERT INTO aluno(nome,cpf,endereco,email,celular)VALUES(?,?,?,?,?)";
 		try {
@@ -31,7 +39,8 @@ public class AlunoDAO {
 			return false;
 		}
 	}
-
+	
+	/*metodo do tipo List que retorna uma lista de todos os alunos cadastrados no sistema.*/
 	public List<Aluno>listar(){
 		String sql  = "SELECT * FROM aluno";
 		List<Aluno> alunos = new ArrayList<>();
@@ -53,6 +62,8 @@ public class AlunoDAO {
 		}
 		return alunos;
 	}
+	
+	/*metodo do tipo Aluno que retorna uma instancia de um tipo Aluno de matricula especifica.*/
 	public Aluno getAlunoWithIndex(int matricula) {
 		String sql = "SELECT * FROM aluno WHERE matricula=?";
 		Aluno a = new Aluno();
@@ -73,6 +84,8 @@ public class AlunoDAO {
 		}
 		return a;
 	}
+	
+	/*metodo do tipo void que altera os dados de um aluno de matricula especifica, usando os valores de uma instancia do tipo Aluno*/
 	public void alteraAluno(Aluno aluno, int id) {
 		String sql = "UPDATE aluno SET nome=?, cpf=?, endereco=?, email=?, celular=? WHERE matricula=?";
 		try {
@@ -89,6 +102,7 @@ public class AlunoDAO {
 		}
 	}
 
+	/*metodo do tipo booleano que remove um aluno de matricula especifica dos regitros de banco de dados*/
 	public boolean remover(Integer id){
 		String sql="DELETE FROM aluno WHERE matricula=?";
 		try {

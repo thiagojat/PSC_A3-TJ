@@ -1,8 +1,10 @@
+/*
+ * Classe responsavel por controlar as acoes possiveis com professor: cadastro, remoçao, listagem e etc.
+ * 
+ * */
 package pControllers;
 
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import javax.swing.JOptionPane;
 
 import pClasses.Professor;
@@ -10,9 +12,6 @@ import pDAO.ProfessorDAO;
 
 public class ProfessorController{
 	
-	ArrayList<Professor> professores = new ArrayList<>(); 
-
-	Scanner sc = new Scanner(System.in); 
 	ProfessorDAO pd = new ProfessorDAO();
 
 	public void menu() {
@@ -20,7 +19,8 @@ public class ProfessorController{
 				+ "O que deseja fazer?\n"
 				+ "1 - Listar professores\n"
 				+ "2 - Alterar professores\n"
-				+ "3 - Cpdastrar professor\n");
+				+ "3 - Cadastrar professor\n"
+				+ "4 - Remover professor\n");
 		int op = Integer.valueOf(inputValue);
 		switch(op) {
 		case 1:
@@ -32,13 +32,15 @@ public class ProfessorController{
 		case 3:
 			cadastrarProfessor();
 			break;
+		case 4:
+			removerProfessor();
 		default:
 			menu();
 			JOptionPane.showMessageDialog(null, "Insira uma opcao valida","Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
 	
+	/*metodo do tipo void que cadastra um professor recebendo os valores desejados pelo usuario e insere no banco de dados*/
 	public void cadastrarProfessor() {
 		
 		Professor p = new Professor();
@@ -49,10 +51,9 @@ public class ProfessorController{
 		p.setNumCel(Long.valueOf(JOptionPane.showInputDialog("Digite o numero de celular do professor")));
 		
 		pd.inserir(p);
-		
-		
 	}
-
+	
+	/*metodo do tipo void que lista todos os professores na tela*/
 	public void listarProfessor() {
 		String sProfessores = "";
 		ArrayList<Professor> aProfessores = new ArrayList<>();
@@ -63,8 +64,8 @@ public class ProfessorController{
 		JOptionPane.showMessageDialog(null, sProfessores, "Lista de professores", JOptionPane.PLAIN_MESSAGE);
 	}
 	
+	/*metodo void que altera o professor de acordo com os valores inseridos pelo usuario*/
 	public void alterarProfessor() {
-
         Professor p = new Professor();
         int id;
         ArrayList<Professor> professores = (ArrayList<Professor>)pd.listar();
@@ -85,5 +86,23 @@ public class ProfessorController{
 
         pd.alteraProfessor(p, id);
     }
+	
+	/*metodo void que remove professor*/
+	private void removerProfessor() {
+		int id;
+		String listagem = "";
+		ArrayList<Professor> professores = (ArrayList<Professor>)pd.listar();
+		for(Professor p : professores) {
+			listagem += "-"+p.toString()+"\n";
+		}
+		id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite o código de funcionário do professor que deseja excluir: "));
+		
+		if(pd.remover(id)) {
+			JOptionPane.showMessageDialog(null, "Professor removido com sucesso", "Removido", JOptionPane.INFORMATION_MESSAGE);
+		}else {
+			JOptionPane.showMessageDialog (null, "Não foi possivel remover professor. Verifique\nse professor não está associado a um curso.", "Falha", JOptionPane.INFORMATION_MESSAGE);
+		}
+		
+	}
 }
 

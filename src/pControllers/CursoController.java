@@ -1,3 +1,7 @@
+/*
+ *Classe que controla as acoes possiveis com curso como: cadastro, remocao, listagem, ativacao, desativacao e etc. 
+ */
+
 package pControllers;
 
 import java.util.ArrayList;
@@ -14,7 +18,8 @@ public class CursoController {
 	Aluno_CursoDAO acd = new Aluno_CursoDAO();
 	ProfessorDAO pd = new ProfessorDAO();
 	SalaDAO sd = new SalaDAO();
-
+	
+	/*metodo void que imprime na tela as opcoes de acoes possives que pode ser feitas com curso e recebe opcao desejada pelo usario*/
 	public void menu() {
 		String inputValue = JOptionPane.showInputDialog(""
 				+ "O que deseja fazer?\n"
@@ -48,28 +53,7 @@ public class CursoController {
 			menu();
 		}
 	}
-	
-	public void matricularAluno() {
-		
-		Aluno[] alunos = new Aluno[ad.listar().size()];
-		int count = 0;
-		for(Aluno c : ad.listar()) {
-			alunos[count] = c;
-			count++;
-		}
-		Object aluno = JOptionPane.showInputDialog(null,"Escolha um Aluno", "Aluno", JOptionPane.INFORMATION_MESSAGE, null, alunos,alunos[0]);
-		Curso[] cursos = new Curso[ad.listar().size()];
-		count = 0;
-		for(Curso c : cd.listar()) {
-			cursos[count] = c;
-			count++;
-		}
-		Object curso = JOptionPane.showInputDialog(null,"Escolha um Curso", "Curso", JOptionPane.INFORMATION_MESSAGE, null, cursos,cursos[0]);
-		
-		acd.matricularAluno((Aluno)aluno, (Curso)curso);	
-		
-	}
-
+	/*metodo void que imprime na tela as possiveis listagens que podem ser feitas com curso e recebe opcao desejada pelo usario*/
 	public void listarMenu() {
 		String inputValue = JOptionPane.showInputDialog(""
 				+ "O que deseja fazer?\n"
@@ -91,10 +75,26 @@ public class CursoController {
 			listarMenu();
 		}
 	}
+	/*metodo do tipo void q lista todos os cursos*/
+	public void listarCurso(){
+		String sCursos = listagemCurso();
+		JOptionPane.showMessageDialog(null, sCursos, "Lista de cursos", JOptionPane.PLAIN_MESSAGE);
+	}
+	/*metodo do tipo void q lista todos os cursos ativos*/
+	public void listarCursosAtivos(){
+		String sCursos = listagemCursosAtivos();
+		JOptionPane.showMessageDialog(null, sCursos, "Lista de cursos", JOptionPane.PLAIN_MESSAGE);
+	}
 
+	/*metodo do tipo void q lista todos os cursos inativos*/
+	public void listarCursosInativos(){
+		String sCursos = listagemCursosInativos();
+		JOptionPane.showMessageDialog(null, sCursos, "Lista de cursos", JOptionPane.PLAIN_MESSAGE);
+	}
+	
+	/*metodo void que recebe do usuario os valores desejados e define estes valores em uma instancia de curso*/
 	public void cadastrarCurso() {
 		Curso c = new Curso();
-
 		c.setNomeCurso(JOptionPane.showInputDialog("Digite o nome do curso"));
 		Professor[] profs = new Professor[pd.listar().size()];
 		int count = 0;
@@ -118,36 +118,24 @@ public class CursoController {
 		
 		cd.inserir(c);
 	}
-
-	public void listarCurso(){
-		String sCursos = listagemCurso();
-		JOptionPane.showMessageDialog(null, sCursos, "Lista de cursos", JOptionPane.PLAIN_MESSAGE);
-	}
-	public void listarCursosAtivos(){
-		String sCursos = listagemCursosAtivos();
-		JOptionPane.showMessageDialog(null, sCursos, "Lista de cursos", JOptionPane.PLAIN_MESSAGE);
-	}
-	public void listarCursosInativos(){
-		String sCursos = listagemCursosInativos();
-		JOptionPane.showMessageDialog(null, sCursos, "Lista de cursos", JOptionPane.PLAIN_MESSAGE);
-	}
 	
+	/*metodo void que altera o curso de acordo com os valores inseridos pelo usuario*/
 	public void alterarCurso() {
-
-        Curso c = new Curso();
-        int id;
-        ArrayList<Curso> cursos = (ArrayList<Curso>)cd.listar();
-        String listagem = "";
-        for (Curso cc : cursos) {
-            listagem += ""
+		
+		Curso c = new Curso();
+		int id;
+		ArrayList<Curso> cursos = (ArrayList<Curso>)cd.listar();
+		String listagem = "";
+		for (Curso cc : cursos) {
+			listagem += ""
 					+ "Curso\n"
 					+ "Codigo do curso: " + cc.getCodigoCurso()+";\n"
 					+ "Nome do curso: "+cc.getNomeCurso()+"\n";
-        }
-        id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite o codigo do curso que deseja alterar: "));
-
-        c.setNomeCurso(JOptionPane.showInputDialog("Digite o nome: ", cd.getCursoWithId(id).getNomeCurso()));
-        Professor[] profs = new Professor[pd.listar().size()];
+		}
+		id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite o codigo do curso que deseja alterar: "));
+		
+		c.setNomeCurso(JOptionPane.showInputDialog("Digite o nome: ", cd.getCursoWithId(id).getNomeCurso()));
+		Professor[] profs = new Professor[pd.listar().size()];
 		int count = 0;
 		for(Professor p : pd.listar()) {
 			profs[count] = p;
@@ -165,13 +153,13 @@ public class CursoController {
 		}
 		Object sala = JOptionPane.showInputDialog(null,"Escolha um professor", "Professor", JOptionPane.INFORMATION_MESSAGE, null, salas,salas[0]);
 		c.setSala((Sala)sala);
-        
-
-        cd.alteraCurso(c, id);
-    }
+		
+		
+		cd.alteraCurso(c, id);
+	}
 	
+	/*metodo do tipo void que ativa o curso do codigo inserido pelo usuario*/
 	public void ativarCurso() {
-
         Curso c = new Curso();
         int id;
         String listagem = listagemCursosAtivos();
@@ -181,7 +169,8 @@ public class CursoController {
 
         cd.setStatus(c, id);
     }
-	
+
+	/*metodo do tipo void que desativa o curso do codigo inserido pelo usuario*/
 	public void desativarCurso() {
 
         Curso c = new Curso();
@@ -194,6 +183,7 @@ public class CursoController {
         cd.setStatus(c, id);
     }
 	
+	/*metodo do tipo String que constroi uma String listando todos os cursos cadastrados no banco de dados*/
 	private String listagemCurso() {
 		String sCursos = "";
 		ArrayList<Curso> aCursos = new ArrayList<>();
@@ -204,6 +194,7 @@ public class CursoController {
 		return sCursos;
 	}
 	
+	/*metodo do tipo String que constroi uma String listando todos os cursos ativos cadastrados no banco de dados*/
 	private String listagemCursosAtivos() {
 		String sCursos = "";
 		ArrayList<Curso> aCursos = new ArrayList<>();
@@ -217,6 +208,8 @@ public class CursoController {
 		}
 		return sCursos;
 	}
+	
+	/*metodo do tipo String que constroi uma String listando todos os cursos inativos cadastrados no banco de dados*/
 	private String listagemCursosInativos() {
 		String sCursos = "";
 		ArrayList<Curso> aCursos = new ArrayList<>();
@@ -229,6 +222,30 @@ public class CursoController {
 						+ "Nome do curso: "+c.getNomeCurso()+"\n";
 		}
 		return sCursos;
+	}
+	
+	/*metodo void cadastra um aluno selecionado pelo usuário em um curso selecionado pelo usuário, passando ambos como parâmetro
+	 * para matricularAluno() em Aluno_CursoDAO
+	*/
+	public void matricularAluno() {
+		
+		Aluno[] alunos = new Aluno[ad.listar().size()];
+		int count = 0;
+		for(Aluno c : ad.listar()) {
+			alunos[count] = c;
+			count++;
+		}
+		Object aluno = JOptionPane.showInputDialog(null,"Escolha um Aluno", "Aluno", JOptionPane.INFORMATION_MESSAGE, null, alunos,alunos[0]);
+		Curso[] cursos = new Curso[ad.listar().size()];
+		count = 0;
+		for(Curso c : cd.listar()) {
+			cursos[count] = c; 
+			count++;
+		}
+		Object curso = JOptionPane.showInputDialog(null,"Escolha um Curso", "Curso", JOptionPane.INFORMATION_MESSAGE, null, cursos,cursos[0]);
+		
+		acd.matricularAluno((Aluno)aluno, (Curso)curso);	
+		
 	}
 
 }

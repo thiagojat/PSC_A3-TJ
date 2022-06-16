@@ -1,3 +1,8 @@
+/*
+ * Classe responsavel por controlar as acoes possiveis com sala: cadastro, remoçao, listagem e etc.
+ * 
+ * */
+
 package pControllers;
 
 import java.util.ArrayList;
@@ -19,7 +24,8 @@ public class SalaController {
 				+ "O que deseja fazer?\n"
 				+ "1 - Listar salas\n"
 				+ "2 - Alterar salas\n"
-				+ "3 - Cadastrar aluno\n");
+				+ "3 - Cadastrar sala\n"
+				+ "4 - Remover sala\n");
 		int op = Integer.valueOf(inputValue);
 		switch(op) {
 		case 1:
@@ -31,14 +37,17 @@ public class SalaController {
 		case 3:
 			cadastrarSala();
 			break;
+		case 4:
+			removeSala();
 		default:
 			menu();
 			JOptionPane.showMessageDialog(null, "Insira uma opcao valida","Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	public void cadastrarSala() {
 
+	/*metodo do tipo void que cadastra um curso recebendo os valores desejados pelo usuario e insere no banco de dados*/
+	public void cadastrarSala() {
 		Sala s = new Sala();
 		s.setNomeSala(JOptionPane.showInputDialog("Digite o nome da sala"));
 		s.setLugarSala(JOptionPane.showInputDialog("Digite o local da sala"));
@@ -49,6 +58,7 @@ public class SalaController {
 
 	}
 
+	/*metodo do tipo void que lista na tela todas as salas cadastradas*/
 	public void listarSala() {
 		String sSalas = "";
 		ArrayList<Sala> aSalas = new ArrayList<>();
@@ -59,8 +69,8 @@ public class SalaController {
 		JOptionPane.showMessageDialog(null, sSalas, "Lista de salas", JOptionPane.PLAIN_MESSAGE);
 	}
 
+	/*metodo void que altera a sala de acordo com os valores inseridos pelo usuario*/
 	public void alterarSala() {
-
 		Sala s = new Sala();
 		int id;
 		ArrayList<Sala> salas = (ArrayList<Sala>)sd.listar();
@@ -78,5 +88,22 @@ public class SalaController {
 		s.setCapacidadeMax(Integer.valueOf(JOptionPane.showInputDialog("Digite o endereco: ", salas.get(id-1).getCapacidadeMax())));
 
 		sd.alteraSala(s, id);
+	}
+	
+	/*metodo do tipo void que imprime na tela uma lista de salas */
+	private void removeSala() {
+		int id;
+		String listagem = "";
+		ArrayList<Sala> salas = (ArrayList<Sala>)sd.listar();
+		for(Sala s : salas) {
+			listagem += "-"+s.toString() + " Cód: "+ s.getCodSala() +"\n";
+		}
+		id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite o código da sala que deseja excluir: "));
+		
+		if(sd.remover(id)) {
+			JOptionPane.showMessageDialog(null, "Sala removida com sucesso", "Removida", JOptionPane.INFORMATION_MESSAGE);
+		}else {
+			JOptionPane.showMessageDialog (null, "Não foi possivel remover a sala. Verifique se\nesta sala não está associada a um curso.", "Falha", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 }

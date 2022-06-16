@@ -1,3 +1,6 @@
+/*
+ * Classe que controla as acoes de aluno como: registro, remocao, listagem e etc.
+ */
 package pControllers;
 
 import java.util.*;
@@ -15,6 +18,7 @@ public class AlunoController extends FuncoesAdicionais{
 	FuncoesAdicionais fa = new FuncoesAdicionais();
 
 	public void menu() {
+		//imprime o menu com as ações de aluno
 		String inputValue = JOptionPane.showInputDialog(""
 				+ "O que deseja fazer?\n"
 				+ "1 - Listar alunos\n"
@@ -40,9 +44,11 @@ public class AlunoController extends FuncoesAdicionais{
 			JOptionPane.showMessageDialog(null, "Insira uma opcao valida","Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
+	
+	/*funcao do tipo void que aceita os valores inseridos pelo usuario, define os valores dentro de uma instância de
+	 *Aluno a e chama um metodo de AlunoDAO que insere este aluno no banco de dados
+	 */
 	public void cadastrarAluno() {
-
 		Aluno a = new Aluno();
 		a.setNomeCom(JOptionPane.showInputDialog("Digite o nome do aluno"));
 		String cpf = JOptionPane.showInputDialog("Digite o CPF do aluno");
@@ -58,14 +64,15 @@ public class AlunoController extends FuncoesAdicionais{
 		a.setNumCel(Long.valueOf(JOptionPane.showInputDialog("Digite o numero de celular do aluno")));
 
 		if(ad.inserir(a)) {;
-			System.out.println("estoremo fml");
+			System.out.println("Aluno cadastrado com sucesso.");
 		}else {
-			System.out.println("mamemo");
+			System.out.println("Não foi possível cadastrar o aluno.");
 		}
 
 
 	}
-
+	
+	//método que imprime lista os alunos na tela
 	public void listarAluno() {
 		String sAlunos = "";
 		ArrayList<Aluno> aAlunos = new ArrayList<>();
@@ -75,7 +82,8 @@ public class AlunoController extends FuncoesAdicionais{
 		}
 		JOptionPane.showMessageDialog(null, sAlunos, "Lista de alunos", JOptionPane.PLAIN_MESSAGE);
 	}
-
+	
+	//metodo responsável por alterar aluno, usando os valores já estabelecidos como referência para o usuário
 	public void alterarAluno() {
 
 		Aluno a = new Aluno();
@@ -89,15 +97,20 @@ public class AlunoController extends FuncoesAdicionais{
 					+ "Nome: "+aa.getNomeCom()+";\n\n";
 		}
 		id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite a matricula do aluno que deseja alterar: "));
+		Aluno alu = ad.getAlunoWithIndex(id);
 
-		a.setNomeCom(JOptionPane.showInputDialog("Digite o nome: ", ad.getAlunoWithIndex(id).getNomeCom()));
-		a.setCpf(JOptionPane.showInputDialog("Digite o CPF: ", ad.getAlunoWithIndex(id).getCpf()));
-		a.setEndereco(JOptionPane.showInputDialog("Digite o endereco: ", ad.getAlunoWithIndex(id).getEndereco()));
-		a.setEmail(JOptionPane.showInputDialog("Digite o email: ", ad.getAlunoWithIndex(id).getEmail()));
-		a.setNumCel(Long.parseLong(JOptionPane.showInputDialog("Digite o celular: ", ad.getAlunoWithIndex(id).getNumCel())));
+		a.setNomeCom(JOptionPane.showInputDialog("Digite o nome: ", alu.getNomeCom()));
+		a.setCpf(JOptionPane.showInputDialog("Digite o CPF: ", alu.getCpf()));
+		a.setEndereco(JOptionPane.showInputDialog("Digite o endereco: ", alu.getEndereco()));
+		a.setEmail(JOptionPane.showInputDialog("Digite o email: ", alu.getEmail()));
+		a.setNumCel(Long.parseLong(JOptionPane.showInputDialog("Digite o celular: ", alu.getNumCel())));
 
 		ad.alteraAluno(a, id);
 	}
+	
+	/*metodo do tipo void que lista as opcoes de aluno que o usuário pode excluir, e aceita o id do aluno a 
+	 *ser excluido e chama o metodo de AlunoDAO para excluir aluno de banco de dados 
+	 * */
 	
 	public void removerAluno() {
 		int id;

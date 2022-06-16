@@ -1,9 +1,10 @@
+/*
+ * Classe que coontrola a relação entre aluno e curso.
+ * */
+
 package pControllers;
 
-import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
-
 import pClasses.*;
 import pDAO.Aluno_CursoDAO;
 
@@ -11,6 +12,10 @@ public class Aluno_CursoController {
 	Aluno_CursoDAO acd = new Aluno_CursoDAO();
 	CursoController cc = new CursoController();
 	
+	/*
+	 * método do tipo void que consulta os alunos matriculados em um curso, compara com a capacidade da sala em que o curso é alocado
+	 * e se for menor, chama o método para inserir a matricula do aluno no banco de dados. 
+	 */
 	public void matricularAluno(Aluno a, Curso c) {
 		int capacidade = c.getSala().getCapacidadeMax();
 		int count = acd.getCount(c);
@@ -22,6 +27,9 @@ public class Aluno_CursoController {
 		}
 	}
 	
+	/*método do tipo String que usa uma lista recuperada de Aluno_CursoDAO e constrói uma string com todos os nome de alunos
+	 *listados em curso c
+	 */
 	public String listarAlunosEmCurso(Curso c) {
 		String listagem = "";
 		for(Aluno a : acd.listarAlunosEmCurso(c)) {

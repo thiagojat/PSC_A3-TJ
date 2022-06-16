@@ -1,3 +1,9 @@
+
+/*
+ * Classe responsavel por comunicar o codigo com o sistema de banco de dados: inserindo, resgatando,
+ * listando, editando e removendo dados.
+ * 
+ * */
 package pDAO;
 
 import java.sql.Connection;
@@ -14,7 +20,10 @@ public class Aluno_CursoDAO {
 	Connection conn = Conector.getConnection();
 	ProfessorDAO pd = new ProfessorDAO();
 	AlunoDAO ad = new AlunoDAO();
-
+	
+	/*metodo que insere a matricula de um aluno matriculado e seu curso no banco de dados, retornando true 
+	 *se a inserção for sucedida e retornado false se for falha.
+	 */
 	public boolean matricularAluno(Aluno a, Curso c) {
 		String sql = "INSERT INTO alunocurso (r_matricula, r_cod_curso) VALUES (?,?)";
 		try {
@@ -29,7 +38,8 @@ public class Aluno_CursoDAO {
 			return false;
 		}
 	}
-
+	
+	/*metodo que recebe do banco de dados todos os alunos matriculados em um curso c, retornando uma lista de todos eles.*/
 	public ArrayList<Aluno> listarAlunosEmCurso(Curso c) {
 		ArrayList<Aluno> alunos = new ArrayList<>();
 		String sql = "SELECT aluno.matricula FROM aluno, alunocurso WHERE aluno.matricula=r_matricula AND r_cod_curso=?";
@@ -47,7 +57,8 @@ public class Aluno_CursoDAO {
 		}
 		return alunos;
 	}
-
+	
+	/*metodo que retorna a contagem de quantos alunos existem inscritos em um curso específico, usando uma instancia do tipo curso*/
 	public int getCount(Curso c) {
 		int count;
 		String sql = "SELECT COUNT(alunocurso.cod_curso) FROM alunocurso, curso WHERE alunocurso.cod_curso=?";
@@ -60,8 +71,10 @@ public class Aluno_CursoDAO {
 		}catch (SQLException e) {
 			System.out.println(e);
 			return 0;
-		}
+		}	
 	}
+	
+	/*metodo que retorna a contagem de quantos alunos existem inscritos em um curso específico, usando o cod_curso do curso desejado*/
 	public int getCount(int c) {
 		int count =0;
 		String sql = "SELECT COUNT(r_cod_curso) AS count FROM alunocurso WHERE r_cod_curso=?";

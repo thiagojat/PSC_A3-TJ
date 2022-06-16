@@ -1,3 +1,9 @@
+/*
+ * Classe responsavel por comunicar o codigo com o sistema de banco de dados: inserindo, resgatando,
+ * listando, editando e removendo dados.
+ * 
+ */
+
 package pDAO;
 
 import java.sql.Connection;
@@ -13,7 +19,9 @@ import pClasses.Sala;
 public class SalaDAO {
 
 	Connection conn = Conector.getConnection();
-
+	
+	/*Metodo do tipo booleano que insere valores de uma instancia do tipo Sala no banco de dados. Caso esta inserção for sucedida,
+	 *o metodo retorna true, caso contrario, retorna false.*/
 	public boolean inserir(Sala sala) {
 		String sql ="INSERT INTO sala(nome,lugar,capacidade)VALUES(?,?,?)";
 		try {
@@ -31,6 +39,7 @@ public class SalaDAO {
 		}
 	}
 
+	/*Metodo do tipo lista que retorna uma lista de todas as salas registradas no banco de dados*/
 	public List<Sala>listar(){
 		String sql  = "SELECT * FROM sala";
 		List<Sala> salas = new ArrayList<>();
@@ -51,6 +60,7 @@ public class SalaDAO {
 		return salas;
 	}
 	
+	/*Metodo do tipo Sala que retorna uma instancia do tipo Sala apartir de um cod_sala especifico*/
 	public Sala getSalaWithIndex(int cod_sala) {
 		String sql = "SELECT * FROM sala WHERE cod_sala=?";
 		Sala s = new Sala();
@@ -70,6 +80,8 @@ public class SalaDAO {
 		return s;
 	}
 	
+	/*Metodo do tipo void que altera os valores de sala de cod_sala = id, usando os valores de uma instancia do tipo Sala como
+	 *referencia*/
 	public void alteraSala(Sala sala, int id) {
         String sql = "UPDATE sala SET nome=?, lugar=?, capacidade=? WHERE cod_sala=?";
         try {
@@ -84,8 +96,10 @@ public class SalaDAO {
         }
     }
 	
+	/*Metodo do tipo booleano que remove  no banco de dados. Caso esta inserção for sucedida,
+	 *o metodo retorna true, caso contrario, retorna false.*/
 	public boolean remover(Integer id){
-		String sql="DELETE FROM aluno WHERE cod_sala=?";
+		String sql="DELETE FROM sala WHERE cod_sala=?";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,id);
