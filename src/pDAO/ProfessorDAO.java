@@ -40,6 +40,24 @@ public class ProfessorDAO {
 		}
 	}
 	
+	public boolean professorExists(int cod_func) {
+		String sql = "SELECT * FROM professor WHERE cod_func=?";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,cod_func);
+			ResultSet resultado = stmt.executeQuery();
+			if(resultado.next()) {
+				return true;
+			}else {
+				return false;
+			}
+			
+		}catch(SQLException e) {
+			System.out.println(e);
+			return false;
+		}
+	}
+	
 	/*Metodo do tipo List que retorna do banco de dados uma lista com todos os professores registrados no banco de dados.*/
 	public List<Professor>listar(){
 		String sql  = "SELECT * FROM professor";

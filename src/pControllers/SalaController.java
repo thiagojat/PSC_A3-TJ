@@ -26,6 +26,12 @@ public class SalaController {
 				+ "2 - Alterar salas\n"
 				+ "3 - Cadastrar sala\n"
 				+ "4 - Remover sala\n");
+		if(inputValue == null) {
+			return;
+		}else if(inputValue.isEmpty()) {
+			menu();
+			return;
+		}
 		int op = Integer.valueOf(inputValue);
 		switch(op) {
 		case 1:
@@ -40,8 +46,8 @@ public class SalaController {
 		case 4:
 			removeSala();
 		default:
-			menu();
 			JOptionPane.showMessageDialog(null, "Insira uma opcao valida","Erro", JOptionPane.ERROR_MESSAGE);
+			menu();
 		}
 	}
 

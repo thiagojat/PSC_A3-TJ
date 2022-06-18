@@ -43,6 +43,23 @@ public class CursoDAO {
 		}
 	}
 
+	public boolean cursoExists(int cod_curso) {
+		String sql = "SELECT * FROM aluno WHERE cod_curso=?";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,cod_curso);
+			ResultSet resultado = stmt.executeQuery();
+			if(resultado.next()) {
+				return true;
+			}else {
+				return false;
+			}
+			
+		}catch(SQLException e) {
+			System.out.println(e);
+			return false;
+		}
+	}
 	
 	/*Metodo do tipo lista que retorna uma lista de todos os cursos registrados no sistema de banco de dados*/
 	public List<Curso>listar(){

@@ -20,8 +20,7 @@ public class AlunoDAO {
 	Connection conn = Conector.getConnection();
 	
 	/*metodo do tipo booleano que insere os valores de uma instancia do tipo Aluno no banco de dado, retornando true se esta inserção
-	 *for sucedida e false se for fracassada
-	 */	
+	 *for sucedida e false se for fracassada*/
 	public boolean inserir(Aluno aluno) {
 		String sql ="INSERT INTO aluno(nome,cpf,endereco,email,celular)VALUES(?,?,?,?,?)";
 		try {
@@ -61,6 +60,24 @@ public class AlunoDAO {
 			System.out.println(ex);
 		}
 		return alunos;
+	}
+	
+	public boolean alunoExists(int matricula) {
+		String sql = "SELECT * FROM aluno WHERE matricula=?";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,matricula);
+			ResultSet resultado = stmt.executeQuery();
+			if(resultado.next()) {
+				return true;
+			}else {
+				return false;
+			}
+			
+		}catch(SQLException e) {
+			System.out.println(e);
+			return false;
+		}
 	}
 	
 	/*metodo do tipo Aluno que retorna uma instancia de um tipo Aluno de matricula especifica.*/

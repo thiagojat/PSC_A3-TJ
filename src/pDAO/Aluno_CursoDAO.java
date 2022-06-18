@@ -58,6 +58,26 @@ public class Aluno_CursoDAO {
 		return alunos;
 	}
 	
+	public boolean alunoExistsInCurso(Aluno a, Curso c) {
+		String sql = "SELECT * FROM alunocurso WHERE r_matricula=? AND r_cod_curso=?";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1,a.getMatricula());
+			stmt.setInt(2,c.getCodigoCurso());
+			
+			ResultSet resultado = stmt.executeQuery();
+			if(resultado.next()) {
+				return true;
+			}else {
+				return false;
+			}
+			
+		}catch(SQLException e) {
+			System.out.println(e);
+			return false;
+		}
+	}
+	
 	/*metodo que retorna a contagem de quantos alunos existem inscritos em um curso específico, usando uma instancia do tipo curso*/
 	public int getCount(Curso c) {
 		int count;

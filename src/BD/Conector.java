@@ -23,5 +23,4 @@ public class Conector {
 		}
 		return conn;
 	}
-
 }
