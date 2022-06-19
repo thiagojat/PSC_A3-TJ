@@ -24,8 +24,9 @@ public class SalaDAO {
 	 *o metodo retorna true, caso contrario, retorna false.*/
 	public boolean inserir(Sala sala) {
 		String sql ="INSERT INTO sala(nome,lugar,capacidade)VALUES(?,?,?)";
+		PreparedStatement stmt = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setString(1,sala.getNomeSala());
 			stmt.setString(2,sala.getLugarSala());
 			stmt.setString(3,""+sala.getCapacidadeMax());
@@ -37,15 +38,18 @@ public class SalaDAO {
 			System.out.println(ex);
 			return false;
 		}
+		finally {Conector.CloseConnection(conn, stmt);}
 	}
 
 	/*Metodo do tipo lista que retorna uma lista de todas as salas registradas no banco de dados*/
 	public List<Sala>listar(){
 		String sql  = "SELECT * FROM sala";
 		List<Sala> salas = new ArrayList<>();
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			ResultSet resultado = stmt.executeQuery();
+			stmt = conn.prepareStatement(sql);
+			resultado = stmt.executeQuery();
 			while(resultado.next()){
 				Sala s =new Sala();
 				s.setCodSala(resultado.getInt("cod_sala"));
@@ -57,6 +61,7 @@ public class SalaDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return salas;
 	}
 	
@@ -64,10 +69,12 @@ public class SalaDAO {
 	public Sala getSalaWithIndex(int cod_sala) {
 		String sql = "SELECT * FROM sala WHERE cod_sala=?";
 		Sala s = new Sala();
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,cod_sala);
-			ResultSet resultado = stmt.executeQuery();
+			resultado = stmt.executeQuery();
 			while(resultado.next()){
 				s.setCodSala(resultado.getInt("cod_sala"));
 				s.setNomeSala(resultado.getString("nome"));
@@ -77,6 +84,7 @@ public class SalaDAO {
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return s;
 	}
 	
@@ -84,8 +92,9 @@ public class SalaDAO {
 	 *referencia*/
 	public void alteraSala(Sala sala, int id) {
         String sql = "UPDATE sala SET nome=?, lugar=?, capacidade=? WHERE cod_sala=?";
+        PreparedStatement stmt = null;
         try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql);
             stmt.setString(1, sala.getNomeSala());
             stmt.setString(2, sala.getLugarSala());
             stmt.setString(3, ""+sala.getCapacidadeMax());
@@ -94,14 +103,16 @@ public class SalaDAO {
         }catch(SQLException ex){
             System.out.println(ex);
         }
+        finally {Conector.CloseConnection(conn, stmt);}
     }
 	
 	/*Metodo do tipo booleano que remove  no banco de dados. Caso esta inserção for sucedida,
 	 *o metodo retorna true, caso contrario, retorna false.*/
 	public boolean remover(Integer id){
 		String sql="DELETE FROM sala WHERE cod_sala=?";
+		PreparedStatement stmt = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,id);
 			stmt.execute();
 			System.out.println("excluido");
@@ -110,5 +121,6 @@ public class SalaDAO {
 			System.out.println(ex);
 			return false;  
 		}  
+		finally {Conector.CloseConnection(conn, stmt);}
 	}
 }

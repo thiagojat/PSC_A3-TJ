@@ -23,8 +23,9 @@ public class AlunoDAO {
 	 *for sucedida e false se for fracassada*/
 	public boolean inserir(Aluno aluno) {
 		String sql ="INSERT INTO aluno(nome,cpf,endereco,email,celular)VALUES(?,?,?,?,?)";
+		PreparedStatement stmt = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setString(1,aluno.getNomeCom());
 			stmt.setString(2,aluno.getCpf());
 			stmt.setString(3,aluno.getEndereco());
@@ -37,15 +38,19 @@ public class AlunoDAO {
 			System.out.println(ex);
 			return false;
 		}
+		finally {Conector.CloseConnection(conn, stmt);}
+		
 	}
 	
 	/*metodo do tipo List que retorna uma lista de todos os alunos cadastrados no sistema.*/
 	public List<Aluno>listar(){
 		String sql  = "SELECT * FROM aluno";
 		List<Aluno> alunos = new ArrayList<>();
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			ResultSet resultado = stmt.executeQuery();
+			stmt = conn.prepareStatement(sql);
+			resultado = stmt.executeQuery();
 			while(resultado.next()){
 				Aluno a =new Aluno();
 				a.setMatricula(resultado.getString("matricula"));
@@ -59,15 +64,18 @@ public class AlunoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return alunos;
 	}
 	
 	public boolean alunoExists(int matricula) {
 		String sql = "SELECT * FROM aluno WHERE matricula=?";
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,matricula);
-			ResultSet resultado = stmt.executeQuery();
+			resultado = stmt.executeQuery();
 			if(resultado.next()) {
 				return true;
 			}else {
@@ -78,16 +86,19 @@ public class AlunoDAO {
 			System.out.println(e);
 			return false;
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 	}
 	
 	/*metodo do tipo Aluno que retorna uma instancia de um tipo Aluno de matricula especifica.*/
 	public Aluno getAlunoWithIndex(int matricula) {
 		String sql = "SELECT * FROM aluno WHERE matricula=?";
 		Aluno a = new Aluno();
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,matricula);
-			ResultSet resultado = stmt.executeQuery();
+			resultado = stmt.executeQuery();
 			while(resultado.next()){
 				a.setMatricula(resultado.getString("matricula"));
 				a.setNomeCom(resultado.getString("nome"));
@@ -99,14 +110,16 @@ public class AlunoDAO {
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return a;
 	}
 	
 	/*metodo do tipo void que altera os dados de um aluno de matricula especifica, usando os valores de uma instancia do tipo Aluno*/
 	public void alteraAluno(Aluno aluno, int id) {
 		String sql = "UPDATE aluno SET nome=?, cpf=?, endereco=?, email=?, celular=? WHERE matricula=?";
+		PreparedStatement stmt = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, aluno.getNomeCom());
 			stmt.setString(2, "" + aluno.getCpf());
 			stmt.setString(3, aluno.getEndereco());
@@ -117,13 +130,15 @@ public class AlunoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
+		finally {Conector.CloseConnection(conn, stmt);}
 	}
 
 	/*metodo do tipo booleano que remove um aluno de matricula especifica dos regitros de banco de dados*/
 	public boolean remover(Integer id){
 		String sql="DELETE FROM aluno WHERE matricula=?";
+		PreparedStatement stmt = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,id);
 			stmt.execute();
 			System.out.println("excluido");
@@ -132,6 +147,7 @@ public class AlunoDAO {
 			System.out.println(ex);
 			return false;  
 		}  
+		finally {Conector.CloseConnection(conn, stmt);}
 	}
 
 

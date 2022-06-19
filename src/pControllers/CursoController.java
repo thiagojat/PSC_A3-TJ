@@ -18,6 +18,7 @@ public class CursoController {
 	Aluno_CursoDAO acd = new Aluno_CursoDAO();
 	ProfessorDAO pd = new ProfessorDAO();
 	SalaDAO sd = new SalaDAO();
+	Aluno_CursoController acc = new Aluno_CursoController();
 
 	/*metodo void que imprime na tela as opcoes de acoes possives que pode ser feitas com curso e recebe opcao desejada pelo usario*/
 	public void menu() {
@@ -181,7 +182,7 @@ public class CursoController {
 	public void ativarCurso() {
 		Curso c = new Curso();
 		int id;
-		String listagem = listagemCursosAtivos();
+		String listagem = listagemCursosInativos();
 		id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite o codigo do curso que deseja ativar: "));
 
 		c.setAtivo(true);
@@ -194,7 +195,7 @@ public class CursoController {
 
 		Curso c = new Curso();
 		int id;
-		String listagem = listagemCursosInativos();
+		String listagem = listagemCursosAtivos();
 		id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite o codigo do curso que deseja desativar: "));
 
 		c.setAtivo(false);
@@ -223,7 +224,8 @@ public class CursoController {
 					+ "Curso\n"
 					+ "Ativo: " + c.isAtivo()+";\n"
 					+ "Codigo do curso: " + c.getCodigoCurso()+";\n"
-					+ "Nome do curso: "+c.getNomeCurso()+"\n";
+					+ "Nome do curso: "+c.getNomeCurso()+"\n"
+					+ "Alunos" + acc.listarAlunosEmCurso(c)+"\n";
 		}
 		return sCursos;
 	}
@@ -255,7 +257,7 @@ public class CursoController {
 			count++;
 		}
 		Object aluno = JOptionPane.showInputDialog(null,"Escolha um Aluno", "Aluno", JOptionPane.INFORMATION_MESSAGE, null, alunos,alunos[0]);
-		Curso[] cursos = new Curso[ad.listar().size()];
+		Curso[] cursos = new Curso[cd.listar().size()];
 		count = 0;
 		for(Curso c : cd.listar()) {
 			cursos[count] = c; 
@@ -263,10 +265,10 @@ public class CursoController {
 		}
 		Object curso = JOptionPane.showInputDialog(null,"Escolha um Curso", "Curso", JOptionPane.INFORMATION_MESSAGE, null, cursos,cursos[0]);
 		
-		if(acd.alunoExistsInCurso((Aluno)aluno, (Curso)curso)) {
+		if(acc.alunoExistsInCurso((Aluno)aluno, (Curso)curso)) {
 			JOptionPane.showMessageDialog(null, "Este aluno ja esta matriculado neste curso","Erro", JOptionPane.ERROR_MESSAGE);
 		}else {
-			if(acd.matricularAluno((Aluno)aluno, (Curso)curso)) {
+			if(acc.matricularAluno((Aluno)aluno, (Curso)curso)) {
 				JOptionPane.showMessageDialog(null, "Aluno matriculado com sucesso!","Sucesso", JOptionPane.PLAIN_MESSAGE);
 			}
 		}

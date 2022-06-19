@@ -26,27 +26,33 @@ public class Aluno_CursoDAO {
 	 */
 	public boolean matricularAluno(Aluno a, Curso c) {
 		String sql = "INSERT INTO alunocurso (r_matricula, r_cod_curso) VALUES (?,?)";
+		PreparedStatement stmt = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, a.getMatricula());
 			stmt.setInt(2, c.getCodigoCurso());
 			
 			stmt.execute();
+			
 			return true;
 		}catch (SQLException e) {
 			System.out.println(e);
+			
 			return false;
 		}
+		finally {Conector.CloseConnection(conn, stmt);}
 	}
 	
 	/*metodo que recebe do banco de dados todos os alunos matriculados em um curso c, retornando uma lista de todos eles.*/
 	public ArrayList<Aluno> listarAlunosEmCurso(Curso c) {
 		ArrayList<Aluno> alunos = new ArrayList<>();
 		String sql = "SELECT aluno.matricula FROM aluno, alunocurso WHERE aluno.matricula=r_matricula AND r_cod_curso=?";
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,c.getCodigoCurso());
-			ResultSet resultado = stmt.executeQuery();
+			resultado = stmt.executeQuery();
 			while(resultado.next()){
 				int id = resultado.getInt("matricula");
 				Aluno a = ad.getAlunoWithIndex(id);
@@ -55,17 +61,20 @@ public class Aluno_CursoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
+		finally {Conector.CloseConnection(conn, stmt);}
 		return alunos;
 	}
 	
 	public boolean alunoExistsInCurso(Aluno a, Curso c) {
 		String sql = "SELECT * FROM alunocurso WHERE r_matricula=? AND r_cod_curso=?";
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setString(1,a.getMatricula());
 			stmt.setInt(2,c.getCodigoCurso());
 			
-			ResultSet resultado = stmt.executeQuery();
+			resultado = stmt.executeQuery();
 			if(resultado.next()) {
 				return true;
 			}else {
@@ -76,32 +85,38 @@ public class Aluno_CursoDAO {
 			System.out.println(e);
 			return false;
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 	}
 	
 	/*metodo que retorna a contagem de quantos alunos existem inscritos em um curso específico, usando uma instancia do tipo curso*/
 	public int getCount(Curso c) {
 		int count;
 		String sql = "SELECT COUNT(alunocurso.cod_curso) FROM alunocurso, curso WHERE alunocurso.cod_curso=?";
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, c.getCodigoCurso());
-			ResultSet resultado = stmt.executeQuery();
+			resultado = stmt.executeQuery();
 			count = resultado.getInt("COUNT(alunocurso.r_cod_curso)");
 			return count;
 		}catch (SQLException e) {
 			System.out.println(e);
 			return 0;
 		}	
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 	}
 	
 	/*metodo que retorna a contagem de quantos alunos existem inscritos em um curso específico, usando o cod_curso do curso desejado*/
 	public int getCount(int c) {
 		int count =0;
 		String sql = "SELECT COUNT(r_cod_curso) AS count FROM alunocurso WHERE r_cod_curso=?";
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, c);
-			ResultSet resultado = stmt.executeQuery();
+			resultado = stmt.executeQuery();
 			while(resultado.next()) {
 				count = resultado.getInt("count");
 			}
@@ -110,5 +125,6 @@ public class Aluno_CursoDAO {
 			System.out.println(e);
 			return 1000000;
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 	}
 }

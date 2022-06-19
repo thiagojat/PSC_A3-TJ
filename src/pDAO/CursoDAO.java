@@ -25,8 +25,9 @@ public class CursoDAO {
 	 *retornando true se esta insercao for sucedida e false se essa operacao for cancelada*/
 	public boolean inserir(Curso curso) {
 		String sql ="INSERT INTO curso(nome,carga_horaria, desc_curso, status, cod_func_curso, cod_sala_curso)VALUES(?,?,?,?,?,?)";
+		PreparedStatement stmt = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setString(1,curso.getNomeCurso());
 			stmt.setString(2,""+curso.getCargaHor());
 			stmt.setString(3,""+curso.getDescCurso());
@@ -35,20 +36,22 @@ public class CursoDAO {
 			stmt.setString(6, ""+curso.getSala().getCodSala());
 
 			stmt.execute();
-			System.out.println("estoremo fml");
 			return true;
 		}catch(SQLException ex){
 			System.out.println(ex);
 			return false;
 		}
+		finally {Conector.CloseConnection(conn, stmt);}
 	}
 
 	public boolean cursoExists(int cod_curso) {
 		String sql = "SELECT * FROM aluno WHERE cod_curso=?";
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,cod_curso);
-			ResultSet resultado = stmt.executeQuery();
+			resultado = stmt.executeQuery();
 			if(resultado.next()) {
 				return true;
 			}else {
@@ -59,15 +62,18 @@ public class CursoDAO {
 			System.out.println(e);
 			return false;
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 	}
 	
 	/*Metodo do tipo lista que retorna uma lista de todos os cursos registrados no sistema de banco de dados*/
 	public List<Curso>listar(){
 		String sql  = "SELECT * FROM curso";
 		List<Curso> cursos = new ArrayList<>();
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			ResultSet resultado = stmt.executeQuery();
+			stmt = conn.prepareStatement(sql);
+			resultado = stmt.executeQuery();
 			while(resultado.next()){
 				Curso c =new Curso();
 				c.setCodigoCurso(resultado.getInt("cod_curso"));
@@ -83,6 +89,7 @@ public class CursoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return cursos;
 	}
 	
@@ -90,9 +97,11 @@ public class CursoDAO {
 	public List<Curso>listarAtivos(){
 		String sql  = "SELECT * FROM curso WHERE status=true";
 		List<Curso> cursos = new ArrayList<>();
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			ResultSet resultado = stmt.executeQuery();
+			stmt = conn.prepareStatement(sql);
+			resultado = stmt.executeQuery();
 			while(resultado.next()){
 				Curso c =new Curso();
 				c.setCodigoCurso(resultado.getInt("cod_curso"));
@@ -107,6 +116,7 @@ public class CursoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return cursos;
 	}
 	
@@ -114,9 +124,11 @@ public class CursoDAO {
 	public List<Curso>listarInativos(){
 		String sql  = "SELECT * FROM curso WHERE status=false";
 		List<Curso> cursos = new ArrayList<>();
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			ResultSet resultado = stmt.executeQuery();
+			stmt = conn.prepareStatement(sql);
+			resultado = stmt.executeQuery();
 			while(resultado.next()){
 				Curso c =new Curso();
 				c.setCodigoCurso(resultado.getInt("cod_curso"));
@@ -131,6 +143,7 @@ public class CursoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return cursos;
 	}
 	
@@ -138,10 +151,12 @@ public class CursoDAO {
 	public Curso getCursoWithId(int cod_curso){
 		String sql  = "SELECT * FROM curso WHERE cod_curso=?";
 		Curso c = new Curso();
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, cod_curso);
-			ResultSet resultado = stmt.executeQuery();
+			resultado = stmt.executeQuery();
 			while(resultado.next()){
 				c.setCodigoCurso(resultado.getInt("cod_curso"));
 				c.setNomeCurso(resultado.getString("nome"));
@@ -153,6 +168,7 @@ public class CursoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return c;
 	}
 	
@@ -160,8 +176,9 @@ public class CursoDAO {
 	 *do tipo curso para inserir novos valores.*/
 	public void alteraCurso(Curso curso, int id) {
         String sql = "UPDATE curso SET nome=?, carga_horaria=?, desc_curso=?, status=? WHERE cod_curso=?";
+        PreparedStatement stmt = null;
         try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql);
             stmt.setString(1, curso.getNomeCurso());
             stmt.setString(2, "" + curso.getCargaHor());
             stmt.setString(3, curso.getDescCurso());
@@ -171,19 +188,22 @@ public class CursoDAO {
         }catch(SQLException ex){
             System.out.println(ex);
         }
+        finally {Conector.CloseConnection(conn, stmt);}
     }
 	
 	/*Metodo do tipo void que altera o status de um curso apartir de seu cod_curso.*/
 	public void setStatus(Curso curso, int id) {
         String sql = "UPDATE curso SET status=? WHERE cod_curso=?";
+        PreparedStatement stmt = null;
         try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql);
             stmt.setBoolean(1,curso.isAtivo());
             stmt.setString(2, "" + id);
             stmt.execute();
         }catch(SQLException ex){
             System.out.println(ex);
         }
+        finally {Conector.CloseConnection(conn, stmt);}
     }
 
 }

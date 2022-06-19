@@ -23,8 +23,9 @@ public class ProfessorDAO {
 	 *Se esta insercao for sucedida, retorna true, se não, retorna false.*/
 	public boolean inserir(Professor professor) {
 		String sql ="INSERT INTO professor(nome,cpf,endereco,email,celular)VALUES(?,?,?,?,?)";
+		PreparedStatement stmt = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setString(1,professor.getNomeCom());
 			stmt.setString(2,professor.getCpf());
 			stmt.setString(3,professor.getEndereco());
@@ -38,33 +39,38 @@ public class ProfessorDAO {
 			System.out.println(ex);
 			return false;
 		}
+		finally {Conector.CloseConnection(conn, stmt);}
 	}
 	
-	public boolean professorExists(int cod_func) {
-		String sql = "SELECT * FROM professor WHERE cod_func=?";
-		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1,cod_func);
-			ResultSet resultado = stmt.executeQuery();
-			if(resultado.next()) {
-				return true;
-			}else {
-				return false;
-			}
-			
-		}catch(SQLException e) {
-			System.out.println(e);
-			return false;
-		}
-	}
+//	public boolean professorExists(int cod_func) {
+//		String sql = "SELECT * FROM professor WHERE cod_func=?";
+//		PreparedStatement stmt = null;
+//		try {
+//			stmt = conn.prepareStatement(sql);
+//			stmt.setInt(1,cod_func);
+//			ResultSet resultado = stmt.executeQuery();
+//			if(resultado.next()) {
+//				return true;
+//			}else {
+//				return false;
+//			}
+//			
+//		}catch(SQLException e) {
+//			System.out.println(e);
+//			return false;
+//		}
+//		finally {Conector.CloseConnection(conn, stmt);}
+//	}
 	
 	/*Metodo do tipo List que retorna do banco de dados uma lista com todos os professores registrados no banco de dados.*/
 	public List<Professor>listar(){
 		String sql  = "SELECT * FROM professor";
 		List<Professor> professores = new ArrayList<>();
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			ResultSet resultado = stmt.executeQuery();
+			stmt = conn.prepareStatement(sql);
+			resultado = stmt.executeQuery();
 			while(resultado.next()){
 				Professor p =new Professor();
 				p.setCodFuncionario(resultado.getString("cod_func"));
@@ -78,6 +84,7 @@ public class ProfessorDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return professores;
 	}
 	
@@ -85,10 +92,12 @@ public class ProfessorDAO {
 	public Professor getProfessorWithIndex(int codFuncionario) {
 		String sql = "SELECT * FROM professor WHERE cod_func=?";
 		Professor p = new Professor();
+		PreparedStatement stmt = null;
+		ResultSet resultado = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,codFuncionario);
-			ResultSet resultado = stmt.executeQuery();
+			resultado = stmt.executeQuery();
 			while(resultado.next()){
 				p.setCodFuncionario(resultado.getString("cod_func"));
 				p.setNomeCom(resultado.getString("nome"));
@@ -100,6 +109,7 @@ public class ProfessorDAO {
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
+		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return p;
 	}
 	
@@ -107,8 +117,9 @@ public class ProfessorDAO {
 	 *do tipo Professor.*/
 	public void alteraProfessor(Professor professor, int id) {
         String sql = "UPDATE professor SET nome=?, cpf=?, endereco=?, email=?, celular=? WHERE cod_func=?";
+        PreparedStatement stmt = null;
         try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql);
             stmt.setString(1, professor.getNomeCom());
             stmt.setString(2, "" + professor.getCpf());
             stmt.setString(3, professor.getEndereco());
@@ -119,13 +130,15 @@ public class ProfessorDAO {
         }catch(SQLException ex){
             System.out.println(ex);
         }
+        finally {Conector.CloseConnection(conn, stmt);}
     }
 	
 	/*Metodo do tipo booleano que remove os registros de um professor especifico a partir de um cod_func especifico(id)*/
 	public boolean remover(Integer id){
 		String sql="DELETE FROM professor WHERE cod_func=?";
+		PreparedStatement stmt = null;
 		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,id);
 			stmt.execute();
 			return true;
@@ -133,5 +146,6 @@ public class ProfessorDAO {
 			System.out.println(ex);
 			return false;  
 		}  
+		finally {Conector.CloseConnection(conn, stmt);}
 	}
 }
