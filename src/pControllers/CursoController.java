@@ -12,7 +12,7 @@ import pClasses.*;
 import pDAO.*;
 import pDAO.SalaDAO;
 
-public class CursoController {
+public class CursoController implements ControllerInterface{
 	AlunoDAO ad = new AlunoDAO();
 	CursoDAO cd = new CursoDAO();
 	Aluno_CursoDAO acd = new Aluno_CursoDAO();
@@ -78,6 +78,7 @@ public class CursoController {
 			break;
 		case 3:
 			listarCursosInativos();
+			break;
 		default:
 			JOptionPane.showMessageDialog(null, "Insira uma opcao valida","Erro", JOptionPane.ERROR_MESSAGE);
 			listarMenu();

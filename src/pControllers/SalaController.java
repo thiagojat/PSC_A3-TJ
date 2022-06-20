@@ -13,8 +13,7 @@ import javax.swing.JOptionPane;
 import pClasses.Sala;
 import pDAO.SalaDAO;
 
-public class SalaController {
-	ArrayList<Sala> salas = new ArrayList<>(); 
+public class SalaController  implements ControllerInterface{
 
 	Scanner sc = new Scanner(System.in); 
 	SalaDAO sd = new SalaDAO();
@@ -45,6 +44,7 @@ public class SalaController {
 			break;
 		case 4:
 			removeSala();
+			break;
 		default:
 			JOptionPane.showMessageDialog(null, "Insira uma opcao valida","Erro", JOptionPane.ERROR_MESSAGE);
 			menu();
@@ -87,11 +87,11 @@ public class SalaController {
 					+ "Codigo: " + ss.getCodSala()+";\n"
 					+ "Nome: "+ss.getNomeSala()+";\n\n";
 		}
-		id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite a matricula do aluno que deseja alterar: "));
-
-		s.setNomeSala(JOptionPane.showInputDialog("Digite o nome: ", salas.get(id-1).getNomeSala()));
-		s.setLugarSala(JOptionPane.showInputDialog("Digite o local da sala: ", salas.get(id-1).getLugarSala()));
-		s.setCapacidadeMax(Integer.valueOf(JOptionPane.showInputDialog("Digite o endereco: ", salas.get(id-1).getCapacidadeMax())));
+		id = Integer.parseInt(JOptionPane.showInputDialog(null, listagem + "Digite o cdigo da sala que deseja alterar que deseja alterar: "));
+		Sala sala = sd.getSalaWithIndex(id);
+		s.setNomeSala(JOptionPane.showInputDialog("Digite o nome: ", sala.getNomeSala()));
+		s.setLugarSala(JOptionPane.showInputDialog("Digite o local da sala: ", sala.getLugarSala()));
+		s.setCapacidadeMax(Integer.valueOf(JOptionPane.showInputDialog("Digite o endereco: ", sala.getCapacidadeMax())));
 
 		sd.alteraSala(s, id);
 	}

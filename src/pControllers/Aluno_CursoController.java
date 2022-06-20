@@ -8,13 +8,15 @@ import javax.swing.JOptionPane;
 import pClasses.*;
 import pDAO.Aluno_CursoDAO;
 
-public class Aluno_CursoController {
+public class Aluno_CursoController implements ControllerInterface{
 	Aluno_CursoDAO acd = new Aluno_CursoDAO();
 	
 	/*
 	 * método do tipo void que consulta os alunos matriculados em um curso, compara com a capacidade da sala em que o curso é alocado
 	 * e se for menor, chama o método para inserir a matricula do aluno no banco de dados. 
 	 */
+	
+	
 	public boolean matricularAluno(Aluno a, Curso c) {
 		int capacidade = c.getSala().getCapacidadeMax();
 		int count = acd.getCount(c);
@@ -43,6 +45,12 @@ public class Aluno_CursoController {
 	
 	public boolean alunoExistsInCurso(Aluno a, Curso c) {
 		return acd.alunoExistsInCurso(a, c);
+	}
+
+	@Override
+	public void menu() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

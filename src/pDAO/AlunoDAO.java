@@ -38,7 +38,7 @@ public class AlunoDAO {
 			System.out.println(ex);
 			return false;
 		}
-		finally {Conector.CloseConnection(conn, stmt);}
+		 
 		
 	}
 	
@@ -64,7 +64,6 @@ public class AlunoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return alunos;
 	}
 	
@@ -86,7 +85,7 @@ public class AlunoDAO {
 			System.out.println(e);
 			return false;
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
+		 
 	}
 	
 	/*metodo do tipo Aluno que retorna uma instancia de um tipo Aluno de matricula especifica.*/
@@ -110,7 +109,7 @@ public class AlunoDAO {
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
+		 
 		return a;
 	}
 	
@@ -130,7 +129,7 @@ public class AlunoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
-		finally {Conector.CloseConnection(conn, stmt);}
+		 
 	}
 
 	/*metodo do tipo booleano que remove um aluno de matricula especifica dos regitros de banco de dados*/
@@ -147,7 +146,7 @@ public class AlunoDAO {
 			System.out.println(ex);
 			return false;  
 		}  
-		finally {Conector.CloseConnection(conn, stmt);}
+		 
 	}
 
 

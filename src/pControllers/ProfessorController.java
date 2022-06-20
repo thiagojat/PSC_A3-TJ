@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import pClasses.Professor;
 import pDAO.ProfessorDAO;
 
-public class ProfessorController{
+public class ProfessorController implements ControllerInterface{
 
 	ProfessorDAO pd = new ProfessorDAO();
 
@@ -40,6 +40,7 @@ public class ProfessorController{
 			break;
 		case 4:
 			removerProfessor();
+			break;
 		default:
 			JOptionPane.showMessageDialog(null, "Insira uma opcao valida","Erro", JOptionPane.ERROR_MESSAGE);
 			menu();
@@ -91,10 +92,10 @@ public class ProfessorController{
 		}
 		id = Integer.valueOf(inputValue);
 
-		//if(!pd.professorExists(id)) {
+		if(!pd.professorExists(id)) {
 			JOptionPane.showMessageDialog(null, "Insira um codigo de funcionario valido","Erro", JOptionPane.ERROR_MESSAGE);
 			alterarProfessor();
-		//}else {
+		}else {
 			p.setNomeCom(JOptionPane.showInputDialog("Digite o nome: ", pd.getProfessorWithIndex(id).getNomeCom()));
 			p.setCpf(JOptionPane.showInputDialog("Digite o CPF: ", pd.getProfessorWithIndex(id).getCpf()));
 			p.setEndereco(JOptionPane.showInputDialog("Digite o endereco: ", pd.getProfessorWithIndex(id).getEndereco()));
@@ -102,7 +103,7 @@ public class ProfessorController{
 			p.setNumCel(Long.parseLong(JOptionPane.showInputDialog("Digite o celular: ", pd.getProfessorWithIndex(id).getNumCel())));
 
 			pd.alteraProfessor(p, id);
-		//}
+		}
 	}
 
 	/*metodo void que remove professor*/
@@ -121,10 +122,10 @@ public class ProfessorController{
 			removerProfessor();
 		}
 		id = Integer.parseInt(inputValue);
-		//if(!pd.professorExists(id)) {
+		if(!pd.professorExists(id)) {
 			JOptionPane.showMessageDialog(null, "Insira uma matrícula valida","Erro", JOptionPane.ERROR_MESSAGE);
 			removerProfessor();
-		//}else {
+		}else {
 			id = Integer.parseInt(inputValue);
 
 			if(pd.remover(id)) {
@@ -132,7 +133,7 @@ public class ProfessorController{
 			}else {
 				JOptionPane.showMessageDialog (null, "Não foi possivel remover professor. Verifique\nse professor não está associado a um curso.", "Falha", JOptionPane.INFORMATION_MESSAGE);
 			}
-		//}
+		}
 	}
 }
 

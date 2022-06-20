@@ -41,11 +41,10 @@ public class CursoDAO {
 			System.out.println(ex);
 			return false;
 		}
-		finally {Conector.CloseConnection(conn, stmt);}
 	}
 
 	public boolean cursoExists(int cod_curso) {
-		String sql = "SELECT * FROM aluno WHERE cod_curso=?";
+		String sql = "SELECT * FROM curso WHERE cod_curso=?";
 		PreparedStatement stmt = null;
 		ResultSet resultado = null;
 		try {
@@ -62,7 +61,6 @@ public class CursoDAO {
 			System.out.println(e);
 			return false;
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
 	}
 	
 	/*Metodo do tipo lista que retorna uma lista de todos os cursos registrados no sistema de banco de dados*/
@@ -89,7 +87,6 @@ public class CursoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return cursos;
 	}
 	
@@ -116,7 +113,6 @@ public class CursoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return cursos;
 	}
 	
@@ -143,7 +139,6 @@ public class CursoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return cursos;
 	}
 	
@@ -168,7 +163,6 @@ public class CursoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return c;
 	}
 	
@@ -188,7 +182,6 @@ public class CursoDAO {
         }catch(SQLException ex){
             System.out.println(ex);
         }
-        finally {Conector.CloseConnection(conn, stmt);}
     }
 	
 	/*Metodo do tipo void que altera o status de um curso apartir de seu cod_curso.*/
@@ -203,7 +196,6 @@ public class CursoDAO {
         }catch(SQLException ex){
             System.out.println(ex);
         }
-        finally {Conector.CloseConnection(conn, stmt);}
     }
 
 }

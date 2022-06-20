@@ -33,34 +33,31 @@ public class ProfessorDAO {
 			stmt.setString(5,""+professor.getNumCel());
 
 			stmt.execute();
-			System.out.println("estoremo fml");
 			return true;
 		}catch(SQLException ex){
 			System.out.println(ex);
 			return false;
 		}
-		finally {Conector.CloseConnection(conn, stmt);}
 	}
 	
-//	public boolean professorExists(int cod_func) {
-//		String sql = "SELECT * FROM professor WHERE cod_func=?";
-//		PreparedStatement stmt = null;
-//		try {
-//			stmt = conn.prepareStatement(sql);
-//			stmt.setInt(1,cod_func);
-//			ResultSet resultado = stmt.executeQuery();
-//			if(resultado.next()) {
-//				return true;
-//			}else {
-//				return false;
-//			}
-//			
-//		}catch(SQLException e) {
-//			System.out.println(e);
-//			return false;
-//		}
-//		finally {Conector.CloseConnection(conn, stmt);}
-//	}
+	public boolean professorExists(int cod_func) {
+		String sql = "SELECT * FROM professor WHERE cod_func=?";
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,cod_func);
+			ResultSet resultado = stmt.executeQuery();
+			if(resultado.next()) {
+				return true;
+			}else {
+				return false;
+			}
+			
+		}catch(SQLException e) {
+			System.out.println(e);
+			return false;
+		}
+	}
 	
 	/*Metodo do tipo List que retorna do banco de dados uma lista com todos os professores registrados no banco de dados.*/
 	public List<Professor>listar(){
@@ -84,7 +81,6 @@ public class ProfessorDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return professores;
 	}
 	
@@ -109,7 +105,6 @@ public class ProfessorDAO {
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return p;
 	}
 	
@@ -130,7 +125,6 @@ public class ProfessorDAO {
         }catch(SQLException ex){
             System.out.println(ex);
         }
-        finally {Conector.CloseConnection(conn, stmt);}
     }
 	
 	/*Metodo do tipo booleano que remove os registros de um professor especifico a partir de um cod_func especifico(id)*/
@@ -146,6 +140,5 @@ public class ProfessorDAO {
 			System.out.println(ex);
 			return false;  
 		}  
-		finally {Conector.CloseConnection(conn, stmt);}
 	}
 }

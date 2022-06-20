@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import pClasses.Aluno;
 import pDAO.AlunoDAO;
 
-public class AlunoController{
+public class AlunoController implements ControllerInterface{
 
 	Scanner sc = new Scanner(System.in); 
 	AlunoDAO ad = new AlunoDAO();
@@ -103,10 +103,10 @@ public class AlunoController{
 			alterarAluno();
 		}
 		id = Integer.parseInt(inputValue);
-		//if(!ad.alunoExists(id)) {
+		if(!ad.alunoExists(id)) {
 			JOptionPane.showMessageDialog(null, "Insira uma matrícula valida","Erro", JOptionPane.ERROR_MESSAGE);
 			alterarAluno();
-		//}else {
+		}else {
 			Aluno alu = ad.getAlunoWithIndex(id);
 
 			a.setNomeCom(JOptionPane.showInputDialog("Digite o nome: ", alu.getNomeCom()));
@@ -116,7 +116,7 @@ public class AlunoController{
 			a.setNumCel(Long.parseLong(JOptionPane.showInputDialog("Digite o celular: ", alu.getNumCel())));
 
 			ad.alteraAluno(a, id);
-		//}
+		}
 	}
 	
 	/*metodo do tipo void que lista as opcoes de aluno que o usuário pode excluir, e aceita o id do aluno a 
@@ -141,10 +141,10 @@ public class AlunoController{
 			removerAluno();
 		}
 		id = Integer.parseInt(inputValue);
-		//if(!ad.alunoExists(id)) {
+		if(!ad.alunoExists(id)) {
 			JOptionPane.showMessageDialog(null, "Insira uma matrícula valida","Erro", JOptionPane.ERROR_MESSAGE);
 			removerAluno();
-		//}else {
+		}else {
 			id = Integer.parseInt(inputValue);
 			if(ad.remover(id)) {
 				JOptionPane.showMessageDialog(null, "Aluno de matrícula "+id+" removido com sucesso","Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -152,6 +152,6 @@ public class AlunoController{
 				JOptionPane.showMessageDialog(null, "Não foi possivel remover o aluno de matricula "+id+".","Erro", JOptionPane.ERROR_MESSAGE);
 			}
 			
-		//}
+		}
 	}
 }

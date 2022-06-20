@@ -32,13 +32,11 @@ public class SalaDAO {
 			stmt.setString(3,""+sala.getCapacidadeMax());
 
 			stmt.execute();
-			System.out.println("estoremo fml");
 			return true;
 		}catch(SQLException ex){
 			System.out.println(ex);
 			return false;
 		}
-		finally {Conector.CloseConnection(conn, stmt);}
 	}
 
 	/*Metodo do tipo lista que retorna uma lista de todas as salas registradas no banco de dados*/
@@ -61,7 +59,6 @@ public class SalaDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return salas;
 	}
 	
@@ -84,7 +81,6 @@ public class SalaDAO {
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
 		return s;
 	}
 	
@@ -103,7 +99,6 @@ public class SalaDAO {
         }catch(SQLException ex){
             System.out.println(ex);
         }
-        finally {Conector.CloseConnection(conn, stmt);}
     }
 	
 	/*Metodo do tipo booleano que remove  no banco de dados. Caso esta inserção for sucedida,
@@ -115,12 +110,10 @@ public class SalaDAO {
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,id);
 			stmt.execute();
-			System.out.println("excluido");
 			return true;
 		}catch(SQLException ex){
 			System.out.println(ex);
 			return false;  
 		}  
-		finally {Conector.CloseConnection(conn, stmt);}
 	}
 }

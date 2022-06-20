@@ -40,7 +40,7 @@ public class Aluno_CursoDAO {
 			
 			return false;
 		}
-		finally {Conector.CloseConnection(conn, stmt);}
+		 
 	}
 	
 	/*metodo que recebe do banco de dados todos os alunos matriculados em um curso c, retornando uma lista de todos eles.*/
@@ -61,7 +61,7 @@ public class Aluno_CursoDAO {
 		}catch(SQLException ex){
 			System.out.println(ex);
 		}
-		finally {Conector.CloseConnection(conn, stmt);}
+		 
 		return alunos;
 	}
 	
@@ -85,26 +85,28 @@ public class Aluno_CursoDAO {
 			System.out.println(e);
 			return false;
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
+		 
 	}
 	
 	/*metodo que retorna a contagem de quantos alunos existem inscritos em um curso específico, usando uma instancia do tipo curso*/
 	public int getCount(Curso c) {
-		int count;
-		String sql = "SELECT COUNT(alunocurso.cod_curso) FROM alunocurso, curso WHERE alunocurso.cod_curso=?";
+		int count =0;
+		String sql = "SELECT COUNT(r_cod_curso) AS count FROM alunocurso WHERE r_cod_curso=?";
 		PreparedStatement stmt = null;
 		ResultSet resultado = null;
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, c.getCodigoCurso());
 			resultado = stmt.executeQuery();
-			count = resultado.getInt("COUNT(alunocurso.r_cod_curso)");
+			while(resultado.next()) {
+				count = resultado.getInt("count");
+			}
 			return count;
 		}catch (SQLException e) {
 			System.out.println(e);
-			return 0;
-		}	
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
+			return 1000000;
+		}
+		 
 	}
 	
 	/*metodo que retorna a contagem de quantos alunos existem inscritos em um curso específico, usando o cod_curso do curso desejado*/
@@ -125,6 +127,6 @@ public class Aluno_CursoDAO {
 			System.out.println(e);
 			return 1000000;
 		}
-		finally {Conector.CloseConnection(conn, stmt, resultado);}
+		 
 	}
 }
